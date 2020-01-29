@@ -30,18 +30,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 
-# SOFTWARE REQUIREMENTS
-
-# SPECIFICATION
-
-# for
-
-# Angular-powered ToDo-List
-
-# Prepared by Björn Biester
-
-# January 29, 2020
-
+# SOFTWARE REQUIREMENTS SPECIFICATION for Angular-powered ToDo-List
 
 ## Contents
 
