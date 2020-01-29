@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TodoService } from './todo.service';
-import { Observable } from 'rxjs';
-import { Todo } from 'src/interfaces/todo';
+import { isObservable } from 'rxjs';
 
 describe('TodoService', () => {
   let todoService: TodoService;
@@ -19,12 +18,12 @@ describe('TodoService', () => {
     expect(todoService.getTodos()).toEqual([]);
   });
 
+  it('#todoSub should return an observable of type Todo list', () => {
+    expect(isObservable(todoService.todoSub)).toBeTruthy();
+  });
+
   it('#getTodos with one pushed value should return Todo list with the pushed value', () => {
     todoService.addTodo('testValue');
     expect(todoService.getTodos).toEqual([{title: 'testValue'}]);
-  });
-
-  it('#todoSub should return an observable of type Todo list', () => {
-    expect(todoService.todoSub).toBe(typeof(new Observable<Todo[]>()));
   });
 });
