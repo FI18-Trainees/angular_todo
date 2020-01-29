@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Todo } from 'src/interfaces/todo';
+import { TodoService } from 'src/services/todo.service';
 
 @Component({
   selector: 'app-list-view',
@@ -7,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListViewComponent implements OnInit {
 
-  constructor() { }
+  todos: Observable<Todo[]>;
+
+  constructor(private todoService: TodoService) { }
 
   ngOnInit() {
+    this.todos = this.todoService.todoSub();
   }
-
 }

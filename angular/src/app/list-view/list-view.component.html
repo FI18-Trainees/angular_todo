@@ -1,1 +1,8 @@
 <p>list-view works!</p>
+<div>
+    <mat-card *ngFor="let todo of todos | async" class="my-2">
+        <mat-card-header>
+            <mat-card-title>{{ todo.title }}</mat-card-title>
+        </mat-card-header>
+    </mat-card>
+</div>
