@@ -58,6 +58,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { InputComponent } from './input/input.component';
 import { ListViewComponent } from './list-view/list-view.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     A11yModule,

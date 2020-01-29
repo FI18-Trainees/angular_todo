@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InputComponent implements OnInit {
 
+  inputValue;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  handleInput(e: KeyboardEvent) {
+    e.preventDefault();
+    alert(this.inputValue);
+    this.inputValue = '';
+  }
 }
