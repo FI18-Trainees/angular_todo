@@ -64,7 +64,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ```
 Name Date Reason For Changes Version
 Björn Biester 04.01.2020 first version 0.0.1
-Björn Biester 29.01.2020 basic structure 0.0.1
+Björn Biester 29.01.2020 basic structure 0.0.2
 ```
 
 ## 1 Introduction
