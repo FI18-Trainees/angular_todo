@@ -1,13 +1,14 @@
-* @zaanposni @monkmitrad
+* @monkmitrad @zaanposni
 
 # GLOBAL
 /angular/* @monkmitrad
 /python/* @zaanposni
 
 # WEBDEV
-*.css @monkmitrad
+*.scss @monkmitrad
 *.html @monkmitrad
 *.js @monkmitrad
+*.ts @monkmitrad
 
 # PYTHON
 *.py @zaanposni
