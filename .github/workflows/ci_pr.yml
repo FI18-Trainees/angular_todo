@@ -27,8 +27,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: npm ci and npm run build
+      - name: ng test
         run: |
           cd angular/
-          npm ci
-          npm run build:ci
+          ng test
