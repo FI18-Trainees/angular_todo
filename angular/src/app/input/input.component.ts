@@ -8,7 +8,7 @@ import { TodoService } from 'src/services/todo.service';
 })
 export class InputComponent implements OnInit {
 
-  inputValue;
+  inputValue: string;
   selectedDate: Date;
 
   constructor(private todoService: TodoService) { }

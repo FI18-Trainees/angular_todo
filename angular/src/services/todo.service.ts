@@ -23,6 +23,6 @@ export class TodoService {
   }
 
   todoSub(): Observable<Todo[]> {
-    return of(this.todos);
+    return of<Todo[]>(this.todos);
   }
 }

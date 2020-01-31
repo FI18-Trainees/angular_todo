@@ -5,7 +5,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { InputComponent } from './input/input.component';
 import { ListViewComponent } from './list-view/list-view.component';
-import { MatSidenavModule, MatDividerModule, MatToolbarModule, MatFormFieldModule, MatCardModule, MatInputModule } from '@angular/material';
+// tslint:disable-next-line: max-line-length
+import { MatSidenavModule, MatDividerModule, MatToolbarModule, MatFormFieldModule, MatCardModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -14,14 +15,17 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
+        BrowserAnimationsModule,
+        FormsModule,
         MatSidenavModule,
         MatDividerModule,
         MatToolbarModule,
         MatFormFieldModule,
         MatInputModule,
         MatCardModule,
-        BrowserAnimationsModule,
-        FormsModule
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
       ],
       declarations: [
         AppComponent,
@@ -49,6 +53,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('todo app is running!');
+    console.log(compiled);
+    expect(compiled.querySelector('app-navbar mat-toolbar mat-toolbar-row span').textContent).toContain('ToDo List');
   });
 });
