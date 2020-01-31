@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Todo } from 'src/interfaces/todo';
 import { TodoService } from 'src/services/todo.service';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
   selector: 'app-list-view',
@@ -16,5 +17,9 @@ export class ListViewComponent implements OnInit {
 
   ngOnInit() {
     this.todos = this.todoService.todoSub();
+  }
+
+  todoFinished(evt: MatCheckboxChange) {
+    console.log(evt.source.id);
   }
 }

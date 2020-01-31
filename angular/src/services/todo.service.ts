@@ -8,6 +8,7 @@ import { of, Observable } from 'rxjs';
 export class TodoService {
 
   private todos: Todo[] = [];
+  private finished_todos: Todo[] = [];
 
   constructor() { }
 
