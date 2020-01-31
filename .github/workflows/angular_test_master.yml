@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '12.x'
 
-      - name: npm install and ng build --prod
+      - name: npm install and ng test --prod
         run: |
           cd angular
           npm install
