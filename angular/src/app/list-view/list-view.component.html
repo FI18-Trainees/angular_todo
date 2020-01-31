@@ -1,1 +1,9 @@
-<p>list-view works!</p>
+<div>
+    <mat-card *ngFor="let todo of todos | async" class="my-2">
+    <mat-card-content class="d-flex">
+        <mat-checkbox></mat-checkbox>
+        <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
+        <div id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
+    </mat-card-content>
+    </mat-card>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TodoService } from 'src/services/todo.service';
 
 @Component({
   selector: 'app-input',
@@ -7,16 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InputComponent implements OnInit {
 
-  inputValue;
+  inputValue: string;
+  selectedDate: Date;
 
-  constructor() { }
+  constructor(private todoService: TodoService) { }
 
   ngOnInit() {
   }
 
   handleInput(e: KeyboardEvent) {
     e.preventDefault();
-    alert(this.inputValue);
+    this.todoService.addTodo(this.inputValue, this.selectedDate);
     this.inputValue = '';
   }
 }
