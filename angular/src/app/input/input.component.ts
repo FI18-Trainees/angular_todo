@@ -9,6 +9,7 @@ import { TodoService } from 'src/services/todo.service';
 export class InputComponent implements OnInit {
 
   inputValue;
+  selectedDate: Date;
 
   constructor(private todoService: TodoService) { }
 
@@ -17,7 +18,7 @@ export class InputComponent implements OnInit {
 
   handleInput(e: KeyboardEvent) {
     e.preventDefault();
-    this.todoService.addTodo(this.inputValue);
+    this.todoService.addTodo(this.inputValue, this.selectedDate);
     this.inputValue = '';
   }
 }

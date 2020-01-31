@@ -1,3 +1,11 @@
-mat-card-title {
-    color: var(--text-primary-color);
+mat-card-content {
+    display: inline-flex;
+}
+
+#title {
+    color: var(--dark);
+}
+
+#dueDate {
+    color: var(--info);
 }

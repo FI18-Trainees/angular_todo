@@ -11,9 +11,10 @@ export class TodoService {
 
   constructor() { }
 
-  addTodo(todoTitle: string) {
+  addTodo(todoTitle: string, dueDate?: Date) {
     this.todos.push({
-      title: todoTitle
+      title: todoTitle,
+      due_date: dueDate
     });
   }
 
