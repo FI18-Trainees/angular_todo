@@ -29,5 +29,6 @@ jobs:
 
       - name: npm ci and npm run build
         run: |
+          cd angular/
           npm ci
           npm run build:ci
