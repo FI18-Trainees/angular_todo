@@ -3,7 +3,7 @@
     <mat-card-content class="d-flex">
         <mat-checkbox></mat-checkbox>
         <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
-        <div id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
+        <div *ngIf="todo.due_date" id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
     </mat-card-content>
     </mat-card>
 </div>

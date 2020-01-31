@@ -1,6 +1,6 @@
 <div class="d-flex">
     <mat-form-field class="flex-grow-1">
-        <input matInput #todoInput placeholder="Your todo..." [(ngModel)]="inputValue" (keyup.enter)="handleInput($event)">
+        <input matInput #todoInput placeholder="Your todo..." [(ngModel)]="inputValue" (keyup.enter)="handleInput($event)" autocomplete="false">
     </mat-form-field>
     <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="Choose a due date" [(ngModel)]="selectedDate">
