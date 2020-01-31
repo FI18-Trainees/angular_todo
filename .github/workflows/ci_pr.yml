@@ -30,4 +30,5 @@ jobs:
       - name: ng test
         run: |
           cd angular/
+          npm install
           ng test
