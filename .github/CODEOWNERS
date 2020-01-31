@@ -1,0 +1,19 @@
+* @monkmitrad @zaanposni
+
+# GLOBAL
+/angular/* @monkmitrad
+/python/* @zaanposni
+
+# WEBDEV
+*.scss @monkmitrad
+*.html @monkmitrad
+*.js @monkmitrad
+*.ts @monkmitrad
+
+# PYTHON
+*.py @zaanposni
+*/requirements.txt @zaanposni
+
+# UNITTESTS
+tests/* @zaanposni
+/.github/workflows @zaanposni
