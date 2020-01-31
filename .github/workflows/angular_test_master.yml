@@ -1,5 +1,8 @@
 name: AngularTest
-on: [pull_request]
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   angular_build:
