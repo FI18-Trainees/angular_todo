@@ -1,8 +1,8 @@
 <div id="openTodos">
     <h3>Open Todos</h3>
-    <mat-card *ngFor="let todo of openTodos" class="my-2">
+    <mat-card [id]="todo.id" *ngFor="let todo of openTodos" class="my-2" (click)="showOpenTodoDetails(todo.id)">
     <mat-card-content class="d-flex">
-        <mat-checkbox [id]="todo.id" (change)="todoFinished($event)"></mat-checkbox>
+        <mat-checkbox [id]="todo.id" (change)="todoFinished(todo.id)"></mat-checkbox>
         <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
         <div *ngIf="todo.due_date" id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
     </mat-card-content>
@@ -11,9 +11,9 @@
 <mat-divider *ngIf="finishedTodos.length > 0"></mat-divider>
 <div id=finishedTodos *ngIf="finishedTodos.length > 0">
     <h3>Finished Todos</h3>
-    <mat-card *ngFor="let todo of finishedTodos" class="my-2">
+    <mat-card [id]="todo.id" *ngFor="let todo of finishedTodos" class="my-2" (click)="showFinishedTodoDetails(todo.id)">
         <mat-card-content class="d-flex">
-            <mat-checkbox [id]="todo.id" [checked]="todo.finished" (change)="todoFinished($event)"></mat-checkbox>
+            <mat-checkbox [id]="todo.id" [checked]="todo.finished" (change)="todoFinished(todo.id)"></mat-checkbox>
             <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
             <div *ngIf="todo.due_date" id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
         </mat-card-content>
