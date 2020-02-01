@@ -24,5 +24,6 @@ export class InputComponent implements OnInit {
       this.todoService.addTodo(this.inputValue);
     }
     this.inputValue = '';
+    this.selectedDate = null;
   }
 }
