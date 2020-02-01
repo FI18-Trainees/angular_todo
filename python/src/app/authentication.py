@@ -2,6 +2,7 @@ from flask_httpauth import HTTPTokenAuth, HTTPBasicAuth
 from flask import redirect, request
 
 from .runtime_settings import login_disabled
+from .user_manager import user_manager
 
 auth = HTTPTokenAuth()
 basic_auth = HTTPBasicAuth()
@@ -16,4 +17,20 @@ def auth_error():
 
 @auth.verify_token
 def verify_token(token):
-    return False
+    if login_disabled:
+        return True
+    token = request.cookies.get("access_token", request.headers.get("Authorization", None))
+    if str(token).strip().lower() in ["null", "none", ""]:
+        return False
+    return user_manager.check_token(token=token)
+
+
+@basic_auth.verify_password
+def verify_password(username, password):
+    if login_disabled:
+        return True
+    if str(username).strip().lower() in ["null", "none", ""]:
+        return False
+    if str(password).strip().lower() in ["null", "none", ""]:
+        return False
+    return user_manager.login(username=username, password=password)

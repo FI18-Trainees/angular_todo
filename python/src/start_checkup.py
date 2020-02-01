@@ -1,7 +1,7 @@
 import os.path
 import sys
 
-from utils import Console, red, white, yellow, blue2
+from utils import Console, red, white
 
 SHL = Console("Checkup")
 
