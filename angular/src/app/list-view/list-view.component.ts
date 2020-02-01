@@ -17,14 +17,18 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
   constructor(private todoService: TodoService) {
     this.todoSubscription = this.todoService.todoSub().subscribe((todo: Todo) => {
-        if (!todo.finished) {
-          this.openTodos.push(todo);
-        } else {
+        if (todo.finished) {
           const index: number = this.openTodos.indexOf(todo);
           if (index !== -1) {
             this.openTodos.splice(index, 1);
           }
           this.finishedTodos.push(todo);
+        } else {
+          const index: number = this.finishedTodos.indexOf(todo);
+          if (index !== -1) {
+            this.finishedTodos.splice(index, 1);
+          }
+          this.openTodos.push(todo);
         }
     });
   }
@@ -38,9 +42,6 @@ export class ListViewComponent implements OnInit, OnDestroy {
   }
 
   todoFinished(evt: MatCheckboxChange) {
-    if (evt.checked) {
-      console.log(evt.source.id);
-      this.todoService.finishTodo(+evt.source.id);
-    }
+    this.todoService.finishTodo(+evt.source.id);
   }
 }

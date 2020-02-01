@@ -29,8 +29,7 @@ export class TodoService {
 
   finishTodo(id: number) {
     const finishedTodo = this.todos[id];
-    console.log(finishedTodo);
-    finishedTodo.finished = true;
+    finishedTodo.finished = !finishedTodo.finished;
     this.todoSubject.next(finishedTodo);
   }
 }
