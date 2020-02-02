@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import os.path
 import json
 import uuid
+from typing import Optional
 
 from werkzeug.security import generate_password_hash, check_password_hash
 import pyotp
@@ -11,7 +12,7 @@ from .runtime_settings import production_mode
 
 SHL = Console("UserManager")
 
-SHL.info(f"Initializing UserManager")
+SHL.info(f"Initializing UserManager.")
 
 BASE_PATH = os.path.dirname(__file__)
 login_file = "login.json" if os.path.isfile(os.path.join(BASE_PATH, "login.json")) else "login-default.json"
@@ -42,7 +43,7 @@ class __UserManager:
         self.username = str(data.get("user", "dummy"))
         self.password = str(data.get("pass", "dummy"))
         self.token = str(data.get("token", None))
-        self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_days", 86400))
+        self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
         self.use_2fa = bool(data.get("use2fa", False))
         self.token_2fa = data.get("token_2fa", None)
         self.token_2fa_temp = None
@@ -53,11 +54,13 @@ class __UserManager:
             self.pyotp_session = pyotp.TOTP(self.token_2fa)
 
     def rename(self, new: str) -> bool:
+        SHL.info(f"Setting new username '{new}'")
         self.username = new
         self.__save_newest_data()
         return True
 
     def login(self, username: str, password: str) -> bool:
+        SHL.info(f"Check credentials for '{username}' and password length {len(password)}.")
         return username == self.username and check_password_hash(self.password, password)
 
     def get_temp_token(self) -> str:
@@ -84,24 +87,21 @@ class __UserManager:
     def get_token(self) -> str:
         if not self.token:
             self.token = str(uuid.uuid4())
-            self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_days", 86400))
+            self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
             self.__save_newest_data()
         if self.expire_at < datetime.utcnow():
             self.token = str(uuid.uuid4())
-            self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_days", 86400))
+            self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
             self.__save_newest_data()
         return self.token
 
     def gen_new_token(self) -> str:
         self.token = str(uuid.uuid4())
-        self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_days", 86400))
+        self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
         self.__save_newest_data()
         return self.token
 
     def check_token(self, token: str) -> bool:
-        print(token)
-        print(self.expire_at)
-        print(self.token)
         if not self.token:
             return False
         if self.expire_at < datetime.utcnow():
@@ -114,7 +114,7 @@ class __UserManager:
 
     def check_2fa_temp_token(self, totp_token: str) -> bool:
         if self.token_2fa_temp:
-            return pyotp.utils.strings_equal(pyotp.TOTP(self.token_2fa_temp), totp_token)
+            return pyotp.utils.strings_equal(pyotp.TOTP(self.token_2fa_temp).now(), totp_token)
         else:
             return False
 
@@ -123,16 +123,22 @@ class __UserManager:
             self.pyotp_session = pyotp.TOTP(self.token_2fa_temp)
             self.token_2fa = self.token_2fa_temp
             self.use_2fa = True
+            self.token = None
+            self.token_2fa_temp = None
             self.__save_newest_data()
             return True
         else:
             return False
 
-    def get_2fa_link(self) -> str:
-        return self.pyotp_session.provisioning_uri(f"{self.username}", issuer_name="TODO")
+    def get_2fa_link(self) -> Optional[str]:
+        if isinstance(self.pyotp_session, pyotp.totp.TOTP):
+            return self.pyotp_session.provisioning_uri(f"{self.username}", issuer_name="TODO")
+        return None
 
     def check_2fa(self, totp_token: str) -> bool:
-        return pyotp.utils.strings_equal(self.pyotp_session.now(), totp_token)
+        if isinstance(self.pyotp_session, pyotp.totp.TOTP):
+            return pyotp.utils.strings_equal(self.pyotp_session.now(), totp_token)
+        return False
 
     def __save_newest_data(self):
         SHL.info(f"Saving newest login info to file.")

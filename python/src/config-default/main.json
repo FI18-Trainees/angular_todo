@@ -1,4 +1,4 @@
 {
   "port": 5000,
-  "token_expire_days": 86400
+  "token_expire_seconds": 86400
 }

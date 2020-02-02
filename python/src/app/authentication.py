@@ -4,18 +4,18 @@ from flask import redirect, request
 from .runtime_settings import login_disabled
 from .user_manager import user_manager
 
-auth = HTTPTokenAuth()
+token_auth = HTTPTokenAuth()
 basic_auth = HTTPBasicAuth()
 
 
-@auth.error_handler
+@token_auth.error_handler
 def auth_error():
     if str(request.script_root + request.path).strip() != "/":
         return redirect(f"/401?redirect={request.script_root + request.path}")
     return redirect(f"/401")
 
 
-@auth.verify_token
+@token_auth.verify_token
 def verify_token(token):
     if login_disabled:
         return True
