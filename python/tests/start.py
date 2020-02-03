@@ -7,5 +7,5 @@ from unittests import TestAPI as test_b
 
 
 if __name__ == '__main__':
-    time.sleep(3)
+    time.sleep(10)
     unittest.main()
