@@ -58,15 +58,21 @@ Authentication: **TokenAuth**<br/>
 Statuscode: `200`
 ```json
 {
-    "status": "success"
+    "status": "success",
+    "message": "todo created",
+    "todo_id": 0
 }
 ```
+`todo_id` is the integer id of the created todo object.
 
 - on invalid json body
 
 Statuscode: `400`
-```text
-"invalid json"
+```json
+{
+    "status": "failed",
+    "message": "invalid json"
+}
 ```
 
 - on missing or invalid data
@@ -74,7 +80,8 @@ Statuscode: `400`
 StatusCode: `400`
 ```json
 {
-    "status": "failed"
+    "status": "failed",
+    "message": "mandatory keys missing"
 }
 ```
 

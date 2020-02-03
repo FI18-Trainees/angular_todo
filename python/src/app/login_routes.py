@@ -45,7 +45,10 @@ def login_2fa():
         try:
             request_data = json.loads(request.data.decode('utf-8'))
         except json.JSONDecodeError:
-            return make_response("invalid json", 400)
+            return make_response(jsonify({
+                "status": "failed",
+                "message": "invalid json"
+            }), 400)
         token_2fa = request_data.get("token_2fa", None)
         reset_token = bool(request_data.get("reset_token", False))
         access_token = user_manager.get_token() if reset_token else user_manager.gen_new_token()
@@ -75,7 +78,10 @@ def login_rename():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
     except json.JSONDecodeError:
-        return make_response("invalid json", 400)
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "invalid json"
+        }), 400)
     new_name = request_data.get("new_name", None)
     if str(new_name).strip().lower() in ["null", "none", ""]:
         data = {
@@ -111,7 +117,10 @@ def login_reset_password():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
     except json.JSONDecodeError:
-        return make_response("invalid json", 400)
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "invalid json"
+        }), 400)
     new_password = request_data.get("new_password", None)
     if str(new_password).strip().lower() in ["null", "none", ""]:
         data = {
@@ -123,6 +132,7 @@ def login_reset_password():
         return jsonify(
             {
                 "status": "success",
+                "message": "password reset"
             }
         )
     data = {
@@ -170,7 +180,10 @@ def login_2fa_validate():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
     except json.JSONDecodeError:
-        return make_response("invalid json", 400)
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "invalid json"
+        }), 400)
     totp_token = request_data.get("totp_token", None)
     if str(totp_token).strip().lower() in ["null", "none", ""]:
         data = {

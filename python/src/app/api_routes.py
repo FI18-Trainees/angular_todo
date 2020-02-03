@@ -24,17 +24,23 @@ def api_todo():
         try:
             request_data = json.loads(request.data.decode('utf-8'))
         except json.JSONDecodeError:
-            return make_response("invalid json", 400)
+            return make_response(jsonify({
+                "status": "failed",
+                "message": "invalid json"
+            }), 400)
         try:
             todo = Todo(**request_data)
         except CreationError:
             return make_response(jsonify({
-                "status": "failed"
+                "status": "failed",
+                "message": "mandatory keys missing"
             }), 400)
         else:
             dummy_todo_list.append(todo)
             return jsonify({
-                "status": "success"
+                "status": "success",
+                "message": "todo created",
+                "todo_id": f"{todo.id}"
             })
     return make_response("invalid method", 405)
 

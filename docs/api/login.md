@@ -78,8 +78,11 @@ Statuscode: `412`
 - on invalid json body
 
 Statuscode: `400`
-```text
-"invalid json"
+```json
+{
+    "status": "failed",
+    "message": "invalid json"
+}
 ```
 
 - on valid credentials but invalid 2fa code
@@ -130,8 +133,11 @@ Statuscode: `200`
 - on invalid json body
 
 Statuscode: `400`
-```text
-"invalid json"
+```json
+{
+    "status": "failed",
+    "message": "invalid json"
+}
 ```
 
 - on invalid name (none provided or too long/short)
@@ -173,15 +179,19 @@ Authentication: **TokenAuth**
 Statuscode: `200`
 ```json
 {
-    "status": "success"
+    "status": "success",
+    "message": "password reset"
 }
 ```
 
 - on invalid json body
 
 Statuscode: `400`
-```text
-"invalid json"
+```json
+{
+    "status": "failed",
+    "message": "invalid json"
+}
 ```
 
 - on no provided password
@@ -287,8 +297,11 @@ Statuscode: `200`
 - on invalid json body
 
 Statuscode: `400`
-```text
-"invalid json"
+```json
+{
+    "status": "failed",
+    "message": "invalid json"
+}
 ```
 
 - on invalid totp token
