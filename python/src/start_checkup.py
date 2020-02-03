@@ -10,4 +10,5 @@ if not os.path.exists(os.path.join("app", "public")):
         SHL.warning(f"public folder is missing but ignored for unittest mode.")
     else:
         raise RuntimeError(f"{red}public folder is missing, use 'ng build --prod' and try again{white}")
-    SHL.info(f"Start_checkup passed.")
+
+SHL.info(f"Start_checkup passed.")

@@ -54,7 +54,7 @@ class __UserManager:
             self.pyotp_session = pyotp.TOTP(self.token_2fa)
 
     def rename(self, new: str) -> bool:
-        SHL.info(f"Setting new username '{new}'")
+        SHL.info(f"Setting new username '{new}'.")
         self.username = new
         self.__save_newest_data()
         return True
@@ -64,6 +64,7 @@ class __UserManager:
         return username == self.username and check_password_hash(self.password, password)
 
     def get_temp_token(self) -> str:
+        SHL.info(f"Generating temp token for 2fa authentication.")
         if not self.temp_token:
             self.temp_token = str(uuid.uuid4())
             self.temp_token_expire_at = datetime.utcnow() + timedelta(seconds=30)
@@ -73,6 +74,7 @@ class __UserManager:
         return self.temp_token
 
     def check_temp_token(self, token: str) -> bool:
+        SHL.info(f"Checking temp token for 2fa authentication.")
         if not self.temp_token:
             return False
         if self.temp_token_expire_at < datetime.utcnow():
@@ -80,11 +82,13 @@ class __UserManager:
         return self.temp_token == token
 
     def set_password(self, new: str) -> bool:
+        SHL.info(f"Resetting password, length: {len(new)}.")
         self.password = generate_password_hash(new)
         self.__save_newest_data()
         return True
 
     def get_token(self) -> str:
+        SHL.info(f"Returning access token.")
         if not self.token:
             self.token = str(uuid.uuid4())
             self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
@@ -96,12 +100,14 @@ class __UserManager:
         return self.token
 
     def gen_new_token(self) -> str:
+        SHL.info(f"Generating new access token.")
         self.token = str(uuid.uuid4())
         self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
         self.__save_newest_data()
         return self.token
 
     def check_token(self, token: str) -> bool:
+        SHL.info(f"Checking access token.")
         if not self.token:
             return False
         if self.expire_at < datetime.utcnow():
@@ -109,16 +115,19 @@ class __UserManager:
         return self.token == token
 
     def get_new_2fa_token(self) -> str:
+        SHL.info(f"Initialized 2fa setup.")
         self.token_2fa_temp = pyotp.random_base32()
         return pyotp.TOTP(self.token_2fa_temp).provisioning_uri(f"{self.username}", issuer_name="TODO")
 
     def check_2fa_temp_token(self, totp_token: str) -> bool:
+        SHL.info(f"Checking 2fa token to validate setup.")
         if self.token_2fa_temp:
             return pyotp.utils.strings_equal(pyotp.TOTP(self.token_2fa_temp).now(), totp_token)
         else:
             return False
 
     def set_2fa_temp_token(self) -> bool:
+        SHL.info(f"Complete 2fa setup and save totp session.")
         if self.token_2fa_temp:
             self.pyotp_session = pyotp.TOTP(self.token_2fa_temp)
             self.token_2fa = self.token_2fa_temp
@@ -131,11 +140,13 @@ class __UserManager:
             return False
 
     def get_2fa_link(self) -> Optional[str]:
+        SHL.info(f"Returning 2fa link.")
         if isinstance(self.pyotp_session, pyotp.totp.TOTP):
             return self.pyotp_session.provisioning_uri(f"{self.username}", issuer_name="TODO")
         return None
 
     def check_2fa(self, totp_token: str) -> bool:
+        SHL.info(f"Checking 2fa totp token.")
         if isinstance(self.pyotp_session, pyotp.totp.TOTP):
             return pyotp.utils.strings_equal(self.pyotp_session.now(), totp_token)
         return False

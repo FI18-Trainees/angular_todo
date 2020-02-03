@@ -24,7 +24,7 @@ def run():
         cfg.reload(debug=True)
 
     SHL.output("Starting up.")
-    SHL.info(f"Using port: ")
+    SHL.info(f"Using port: {port}")
 
     app.run(host='0.0.0.0', port=port)
 

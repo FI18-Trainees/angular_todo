@@ -6,12 +6,14 @@ from utils import Console, cfg
 from .flask_app import app
 from .authentication import token_auth, basic_auth
 from .user_manager import user_manager
+from .flask_limiter import limiter
 
 SHL = Console("Routes")
 
 
 @app.route("/login")
 @basic_auth.login_required
+@limiter.limit("20 per hour")
 def login():
     if user_manager.use_2fa:
         data = {
@@ -30,6 +32,7 @@ def login():
 
 @app.route("/login/2fa")
 @basic_auth.login_required
+@limiter.limit("20 per hour")
 def login_2fa():
     if not user_manager.use_2fa:
         data = {
@@ -67,6 +70,7 @@ def login_2fa():
 
 @app.route("/login/rename", methods=["POST"])
 @token_auth.login_required
+@limiter.limit("20 per hour")
 def login_rename():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
@@ -102,6 +106,7 @@ def login_rename():
 
 @app.route("/login/reset/password", methods=["POST"])
 @token_auth.login_required
+@limiter.limit("20 per hour")
 def login_reset_password():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
@@ -129,6 +134,7 @@ def login_reset_password():
 
 @app.route("/login/reset/token", methods=["POST"])
 @token_auth.login_required
+@limiter.limit("20 per hour")
 def login_reset_token():
     if user_manager.use_2fa:
         data = {
@@ -147,6 +153,7 @@ def login_reset_token():
 
 @app.route("/login/2fa/new", methods=["POST"])
 @token_auth.login_required
+@limiter.limit("20 per hour")
 def login_2fa_new():
     data = {
         "status": "success",
@@ -158,6 +165,7 @@ def login_2fa_new():
 
 @app.route("/login/2fa/validate", methods=["POST"])
 @token_auth.login_required
+@limiter.limit("20 per hour")
 def login_2fa_validate():
     try:
         request_data = json.loads(request.data.decode('utf-8'))
