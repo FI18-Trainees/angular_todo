@@ -1,12 +1,12 @@
-# API
+# LOGIN API
 
 On failed authentication every endpoints returns a redirect to<br/>
 `/401` with query param "redirect" including the requested path
 
 <hr/>
 
-## /login
-Authentication: **BasicAuth**
+## GET /login
+Authentication: **BasicAuth**<br/>
 
 **Returns:**
 
@@ -38,8 +38,8 @@ This token is valid for 30 seconds if not defined otherwise in the server config
 
 <hr/>
 
-## /login/2fa
-Authentication: **BasicAuth**
+## GET /login/2fa
+Authentication: **BasicAuth**<br/>
 
 **JSON Body:**
 ```json
@@ -104,8 +104,8 @@ Statuscode: `401`
 
 <hr/>
 
-## /login/rename
-Authentication: **TokenAuth**
+## POST /login/rename
+Authentication: **TokenAuth**<br/>
 
 **JSON Body:**
 ```json
@@ -157,7 +157,7 @@ Most likely if you can just try again if this error appears.
 
 <hr/>
 
-## /login/reset/password
+## POST /login/reset/password
 Authentication: **TokenAuth**
 
 **JSON Body:**
@@ -207,7 +207,7 @@ Most likely if you can just try again if this error appears.
 
 <hr/>
 
-## /login/reset/token
+## POST /login/reset/token
 Authentication: **TokenAuth**
 
 **Returns:**
@@ -238,7 +238,7 @@ This token is valid for 30 seconds if not defined otherwise in the server config
 
 <hr/>
 
-## /login/2fa/new
+## POST /login/2fa/new
 Authentication: **TokenAuth**
 
 This endpoint is used to initialize the creation of 2fa usage.
@@ -262,7 +262,7 @@ Now ask the user to input the 6 digit code his app produces and use `/login/2fa/
 
 <hr/>
 
-## /login/2fa/validate
+## POST /login/2fa/validate
 Authentication: **TokenAuth**
 
 **JSON Body:**
@@ -314,7 +314,7 @@ Most likely if you can just try again if this error appears.
 
 <hr/>
 
-## /login/2fa/link
+## GET /login/2fa/link
 Authentication: **TokenAuth**
 
 Receive the link for the totp session that the user can use in GoogleAuthenticator. For convenience you might want to render a QR-Code bassed on this link.
