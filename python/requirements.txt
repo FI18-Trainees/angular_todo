@@ -4,3 +4,4 @@ flask_httpauth==3.3.0
 pyotp==2.3.0
 python_dateutil==2.8.1
 Werkzeug==0.16.1
+flask_limiter==1.1.0
