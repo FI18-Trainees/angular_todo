@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule, MatCheckboxModule } from '@angular/material';
+import { MatCardModule, MatCheckboxModule, MatDividerModule } from '@angular/material';
 
 import { ListViewComponent } from './list-view.component';
 
@@ -11,7 +11,8 @@ describe('ListViewComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatCardModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatDividerModule
       ],
       declarations: [ ListViewComponent ]
     })
