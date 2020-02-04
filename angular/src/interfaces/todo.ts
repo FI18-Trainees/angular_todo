@@ -1,8 +1,14 @@
+import { Priority } from 'src/enums/priority.enum';
+
 export interface Todo {
     title: string;
-    due_date?: Date;
+    id: number;
     finished: boolean;
+    list: string;
+    priority: Priority;
+    due_date?: Date;
     address?: string;
     description?: string;
-    id: number;
+    subtask?: string[];
+    reminder?: Date;
 }

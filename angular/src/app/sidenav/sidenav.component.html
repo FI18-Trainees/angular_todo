@@ -1,3 +1,15 @@
-<div id="todoDetails" *ngIf="displayedTodo">
-    <h3>{{ displayedTodo.title }}</h3>
+<div id="todoDetails" *ngIf="displayedTodo" class="m-2">
+    <div class="header d-flex p-2 align-items-center">    
+        <mat-checkbox></mat-checkbox>
+        <h3 class="pl-3">{{ displayedTodo.title }}</h3>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="details p-2">
+        <div *ngIf="displayedTodo.due_date">Due date: {{ displayedTodo.due_date.toLocaleDateString() }}</div>
+        <div *ngIf="displayedTodo.reminder">Reminder: {{ displayedTodo.reminder.toLocaleDateString() }}</div>
+        <div *ngIf="displayedTodo.priority">Priority: {{ displayedTodo.priority }}</div>
+        <div *ngIf="displayedTodo.address">Address: <Address>{{ displayedTodo.address }}</Address></div>
+        <mat-divider *ngIf="displayedTodo.description"></mat-divider>
+        <div *ngIf="displayedTodo.description">{{ displayedTodo.description }}</div>
+    </div>
 </div>

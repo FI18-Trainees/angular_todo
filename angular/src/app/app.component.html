@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <mat-sidenav-container class="content-container" (backdropClick)="sidenav.close()">
-    <mat-sidenav #sidenav mode="over" hasBackdrop="true" (click)="sidenav.close()" [(opened)]="opened" position="end">
+    <mat-sidenav #sidenav mode="over" hasBackdrop="true" [(opened)]="opened" position="end">
         <app-sidenav></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>

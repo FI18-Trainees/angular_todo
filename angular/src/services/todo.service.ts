@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Todo } from 'src/interfaces/todo';
 import { from, Subject } from 'rxjs';
+import { Priority } from 'src/enums/priority.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class TodoService {
   constructor() { }
 
   addTodo(todoTitle: string, dueDate?: Date) {
-    const todo: Todo = {title: todoTitle, due_date: dueDate, finished: false, id: this.index++};
+    const todo: Todo = {title: todoTitle, due_date: dueDate, finished: false, id: this.index++, list: 'default', priority: Priority.normal};
     this.todos.push(todo);
     this.todoSubject.next(todo);
   }
