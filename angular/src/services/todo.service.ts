@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Todo } from 'src/interfaces/todo';
-import { from, Subject } from 'rxjs';
-import { Priority } from 'src/enums/priority.enum';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,28 +8,21 @@ import { Priority } from 'src/enums/priority.enum';
 export class TodoService {
 
   private todos: Todo[] = [];
-  private todoSubject: Subject<Todo> = new Subject<Todo>();
-  private index = 0;
 
   constructor() { }
 
   addTodo(todoTitle: string, dueDate?: Date) {
-    const todo: Todo = {title: todoTitle, due_date: dueDate, finished: false, id: this.index++, list: 'default', priority: Priority.normal};
-    this.todos.push(todo);
-    this.todoSubject.next(todo);
+    this.todos.push({
+      title: todoTitle,
+      due_date: dueDate
+    });
   }
 
   getTodos(): Todo[] {
     return this.todos;
   }
 
-  todoSub() {
-    return this.todoSubject;
-  }
-
-  finishTodo(id: number) {
-    const finishedTodo = this.todos[id];
-    finishedTodo.finished = !finishedTodo.finished;
-    this.todoSubject.next(finishedTodo);
+  todoSub(): Observable<Todo[]> {
+    return of<Todo[]>(this.todos);
   }
 }
