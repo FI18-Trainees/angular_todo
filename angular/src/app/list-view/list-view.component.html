@@ -1,9 +1,21 @@
-<div>
-    <mat-card *ngFor="let todo of todos | async" class="my-2">
+<div id="openTodos">
+    <h3>Open Todos</h3>
+    <mat-card [id]="todo.id" *ngFor="let todo of openTodos" class="my-2" (click)="showOpenTodoDetails(todo.id)">
     <mat-card-content class="d-flex">
-        <mat-checkbox></mat-checkbox>
+        <mat-checkbox [id]="todo.id" (change)="todoFinished(todo.id)" (click)="$event.stopPropagation()"></mat-checkbox>
         <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
-        <div id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
+        <div *ngIf="todo.due_date" id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
     </mat-card-content>
+    </mat-card>
+</div>
+<mat-divider *ngIf="finishedTodos.length > 0"></mat-divider>
+<div id=finishedTodos *ngIf="finishedTodos.length > 0">
+    <h3>Finished Todos</h3>
+    <mat-card [id]="todo.id" *ngFor="let todo of finishedTodos" class="my-2" (click)="showFinishedTodoDetails(todo.id)">
+        <mat-card-content class="d-flex">
+            <mat-checkbox [id]="todo.id" [checked]="todo.finished" (change)="todoFinished(todo.id)" (click)="$event.stopPropagation()"></mat-checkbox>
+            <div id="title" class="ml-3 flex-grow-1">{{ todo.title }}</div>
+            <div *ngIf="todo.due_date" id="dueDate" class="ml-auto">{{ todo.due_date.toLocaleDateString() }}</div>
+        </mat-card-content>
     </mat-card>
 </div>

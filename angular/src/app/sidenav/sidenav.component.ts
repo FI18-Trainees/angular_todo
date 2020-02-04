@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Todo } from 'src/interfaces/todo';
+import { SidenavService } from 'src/services/sidenav.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
-  constructor() { }
+  displayedTodo: Todo;
+
+  constructor(private sidenavService: SidenavService) { }
 
   ngOnInit() {
+    this.sidenavService.todoSub().subscribe((todo: Todo) => {
+      this.displayedTodo = todo;
+    });
   }
-
 }
