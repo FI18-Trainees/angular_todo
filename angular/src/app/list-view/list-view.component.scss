@@ -2,7 +2,13 @@ mat-card-content {
     display: inline-flex;
 }
 
-#title {
+mat-divider {
+    border-top-width: 2px;
+    border-top-style: solid;
+    margin: 1rem 0;
+}
+
+#openTitle, #finishedTitle {
     color: var(--dark);
 }
 

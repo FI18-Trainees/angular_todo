@@ -18,7 +18,12 @@ export class InputComponent implements OnInit {
 
   handleInput(e: KeyboardEvent) {
     e.preventDefault();
-    this.todoService.addTodo(this.inputValue, this.selectedDate);
+    if (this.selectedDate) {
+      this.todoService.addTodo(this.inputValue, this.selectedDate);
+      this.selectedDate = null;
+    } else {
+      this.todoService.addTodo(this.inputValue);
+    }
     this.inputValue = '';
   }
 }
