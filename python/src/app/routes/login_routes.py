@@ -18,10 +18,9 @@ def login():
     if user_manager.use_2fa:
         data = {
             "login_status": "2fa required",
-            "login_status_code": 1,
-            "temp_token": user_manager.get_temp_token()
+            "login_status_code": 1
         }
-        return jsonify(data)
+        return make_response(jsonify(data), 401)
     data = {
         "login_status": "access_token generated",
         "login_status_code": 0,
@@ -40,33 +39,26 @@ def login_2fa():
             "login_status_code": 4
         }
         return make_response(jsonify(data), 412)
-    temp_token = request.cookies.get("temp_token", None)
-    if user_manager.check_temp_token(temp_token):
-        try:
-            request_data = json.loads(request.data.decode('utf-8'))
-        except json.JSONDecodeError:
-            return make_response(jsonify({
-                "status": "failed",
-                "message": "invalid json"
-            }), 400)
-        token_2fa = request_data.get("token_2fa", None)
-        reset_token = bool(request_data.get("reset_token", False))
-        access_token = user_manager.get_token() if reset_token else user_manager.gen_new_token()
-        if user_manager.check_2fa(totp_token=token_2fa):
-            data = {
-                "login_status": "access_token generated",
-                "login_status_code": 0,
-                "access_token": access_token
-            }
-            return jsonify(data)
+    try:
+        request_data = json.loads(request.data.decode('utf-8'))
+    except json.JSONDecodeError:
+        return make_response(jsonify({
+            "status": "failed",
+            "message": "invalid json"
+        }), 400)
+    token_2fa = request_data.get("token_2fa", None)
+    reset_token = bool(request_data.get("reset_token", False))
+    access_token = user_manager.get_token() if reset_token else user_manager.gen_new_token()
+    if user_manager.check_2fa(totp_token=token_2fa):
         data = {
-            "login_status": "2fa invalid",
-            "login_status_code": 3
+            "login_status": "access_token generated",
+            "login_status_code": 0,
+            "access_token": access_token
         }
-        return make_response(jsonify(data), 401)
+        return jsonify(data)
     data = {
-        "login_status": "invalid temp token",
-        "login_status_code": 2
+        "login_status": "2fa invalid",
+        "login_status_code": 3
     }
     return make_response(jsonify(data), 401)
 
@@ -149,8 +141,7 @@ def login_reset_token():
     if user_manager.use_2fa:
         data = {
             "login_status": "2fa required",
-            "login_status_code": 1,
-            "temp_token": user_manager.get_temp_token()
+            "login_status_code": 1
         }
         return jsonify(data)
     data = {
@@ -165,10 +156,12 @@ def login_reset_token():
 @token_auth.login_required
 @limiter.limit("20 per hour")
 def login_2fa_new():
+    token, link = user_manager.get_new_2fa_token()
     data = {
         "status": "success",
         "message": "temp_2fa_token generated.",
-        "link": user_manager.get_new_2fa_token()
+        "link": link,
+        "token": token
     }
     return jsonify(data)
 

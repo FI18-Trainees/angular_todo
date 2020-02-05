@@ -22,19 +22,16 @@ Statuscode: `200`
 ```
 Save this token as cookie "access_token".
 
-- on valid credentials with 2fa enabled
+- on valid credentials but 2fa enabled
 
-Statuscode: `200`
+Statuscode: `401`
 ```json
 {
     "login_status": "2fa required",
-    "login_status_code": 1,
-    "temp_token": "token"
+    "login_status_code": 1
 }
 ```
-Use the temporary valid token to authenticate at `/login/2fa`<br/>
-Save a cookie as "temp_token".
-This token is valid for 30 seconds if not defined otherwise in the server config.
+Login at `/login/2fa` to authenticate on a 2fa enabled account.
 
 <hr/>
 
@@ -49,7 +46,7 @@ Authentication: **BasicAuth**<br/>
 }
 ```
 
-`reset_token` is optional and garuantees that a new session token is generated. (set `true` if this behaviour is wanted)
+`reset_token` is optional and guarantees that a new session token is generated. (set `true` if this behaviour is wanted)
 
 **Returns:**
 - on valid credentials and valid 2fa token
@@ -92,16 +89,6 @@ Statuscode: `401`
 {
     "login_status": "2fa invalid",
     "login_status_code": 3
-}
-```
-
-- on valid credentials but invalid temp_token (from `/login`)
-
-Statuscode: `401`
-```json
-{
-    "login_status": "invalid temp token",
-    "login_status_code": 2
 }
 ```
 
@@ -261,7 +248,8 @@ Statuscode: `200`
 {
     "status": "success",
     "message": "temp_2fa_token generated.",
-    "link": "link_for_2fa_application"
+    "link": "link_for_2fa_application",
+    "token": "totp secret"
 }
 ```
 

@@ -66,24 +66,6 @@ class __UserManager:
         SHL.info(f"Check credentials for '{username}' and password length {len(password)}.")
         return username == self.username and check_password_hash(self.password, password)
 
-    def get_temp_token(self) -> str:
-        SHL.info(f"Generating temp token for 2fa authentication.")
-        if not self.temp_token:
-            self.temp_token = str(uuid.uuid4())
-            self.temp_token_expire_at = datetime.utcnow() + timedelta(seconds=30)
-        if self.temp_token_expire_at < datetime.utcnow():
-            self.temp_token = str(uuid.uuid4())
-            self.temp_token_expire_at = datetime.utcnow() + timedelta(seconds=30)
-        return self.temp_token
-
-    def check_temp_token(self, token: str) -> bool:
-        SHL.info(f"Checking temp token for 2fa authentication.")
-        if not self.temp_token:
-            return False
-        if self.temp_token_expire_at < datetime.utcnow():
-            return False
-        return self.temp_token == token
-
     def set_password(self, new: str) -> bool:
         SHL.info(f"Resetting password, length: {len(new)}.")
         self.password = generate_password_hash(new)
@@ -117,10 +99,10 @@ class __UserManager:
             return False
         return self.token == token
 
-    def get_new_2fa_token(self) -> str:
+    def get_new_2fa_token(self) -> (str, str):
         SHL.info(f"Initialized 2fa setup.")
         self.token_2fa_temp = pyotp.random_base32()
-        return pyotp.TOTP(self.token_2fa_temp).provisioning_uri(f"{self.username}", issuer_name="TODO")
+        return self.token_2fa_temp, pyotp.TOTP(self.token_2fa_temp).provisioning_uri(f"{self.username}", issuer_name="TODO")
 
     def check_2fa_temp_token(self, totp_token: str) -> bool:
         SHL.info(f"Checking 2fa token to validate setup.")
