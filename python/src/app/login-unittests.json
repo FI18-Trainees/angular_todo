@@ -1,7 +1,0 @@
-{
-  "user": "dummy",
-  "pass": "pbkdf2:sha256:150000$ODCAJKg8$213a20407b9151a6ed35eebaa78fe56a7761b020a1dc840fb36cc788f0ab975e",
-  "token": null,
-  "use2fa": false,
-  "token_2fa": null
-}

@@ -16,9 +16,6 @@ SHL.info(f"Initializing UserManager.")
 
 BASE_PATH = os.path.dirname(__file__)
 login_file = "login.json" if os.path.isfile(os.path.join(BASE_PATH, "login.json")) else "login-default.json"
-if unittest_mode:
-    login_file = "login-unittests.json"
-
 LOGIN_INFO = os.path.join(BASE_PATH, login_file)
 SHL.info(f"Login info in file {LOGIN_INFO}")
 
