@@ -20,10 +20,10 @@ export class InputComponent implements OnInit {
     e.preventDefault();
     if (this.selectedDate) {
       this.todoService.addTodo(this.inputValue, this.selectedDate);
+      this.selectedDate = null;
     } else {
       this.todoService.addTodo(this.inputValue);
     }
     this.inputValue = '';
-    this.selectedDate = null;
   }
 }
