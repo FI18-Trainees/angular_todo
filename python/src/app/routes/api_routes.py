@@ -2,11 +2,11 @@ import json
 
 from flask import make_response, jsonify, request
 
-from .authentication import token_auth
-from .flask_app import app
 from utils import Console
-from .obj import Todo
-from .obj.errors import CreationError
+from app.authentication import token_auth
+from app.flask_app import app
+from app.obj import Todo
+from app.obj.errors import CreationError
 
 SHL = Console("Routes")
 

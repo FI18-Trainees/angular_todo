@@ -1,4 +1,4 @@
 from .flask_app import app
-from . import routes
-from . import api_routes
-from . import login_routes
+from .routes import static_routes
+from .routes import api_routes
+from .routes import login_routes

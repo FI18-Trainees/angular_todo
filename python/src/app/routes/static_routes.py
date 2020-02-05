@@ -1,12 +1,11 @@
-import json
 import os
 
-from .flask_app import app
-from flask import request, jsonify, make_response, send_from_directory
+from flask import send_from_directory, make_response
 
-from utils import Console, cfg
-from .authentication import token_auth
-from .flask_limiter import limiter
+from utils import Console
+from app.flask_app import app
+from app.authentication import token_auth
+from app.flask_limiter import limiter
 
 SHL = Console("Routes")
 
@@ -20,7 +19,7 @@ def index():
 @app.route("/401")
 @limiter.exempt
 def unauthorized_access():
-    return "401"
+    return make_response("401", 401)
 
 
 @app.route("/secret")

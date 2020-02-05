@@ -2,11 +2,11 @@ import json
 
 from flask import request, jsonify, make_response
 
-from utils import Console, cfg
-from .flask_app import app
-from .authentication import token_auth, basic_auth
-from .user_manager import user_manager
-from .flask_limiter import limiter
+from utils import Console
+from app.flask_app import app
+from app.authentication import token_auth, basic_auth
+from app.user_manager import user_manager
+from app.flask_limiter import limiter
 
 SHL = Console("Routes")
 

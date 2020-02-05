@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pyotp
 
 from utils import Console, red, white, cfg
-from .runtime_settings import production_mode
+from .runtime_settings import production_mode, unittest_mode
 
 SHL = Console("UserManager")
 
@@ -16,6 +16,9 @@ SHL.info(f"Initializing UserManager.")
 
 BASE_PATH = os.path.dirname(__file__)
 login_file = "login.json" if os.path.isfile(os.path.join(BASE_PATH, "login.json")) else "login-default.json"
+if unittest_mode:
+    login_file = "login-unittests.json"
+
 LOGIN_INFO = os.path.join(BASE_PATH, login_file)
 SHL.info(f"Login info in file {LOGIN_INFO}")
 
@@ -42,7 +45,7 @@ class __UserManager:
         SHL.info(f"Setting user data.")
         self.username = str(data.get("user", "dummy"))
         self.password = str(data.get("pass", "dummy"))
-        self.token = str(data.get("token", None))
+        self.token = data.get("token", None)
         self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
         self.use_2fa = bool(data.get("use2fa", False))
         self.token_2fa = data.get("token_2fa", None)
@@ -156,9 +159,9 @@ class __UserManager:
         data = {
           "user": self.username,
           "pass": self.password,
-          "token": self.token,
-          "use2fa": self.use_2fa,
-          "token_2fa": self.token_2fa
+          "token": str(self.token) if self.token else None,
+          "use2fa": str(self.use_2fa) if self.use_2fa else None,
+          "token_2fa": str(self.token_2fa) if self.token_2fa else None
         }
         try:
             with open(os.path.join(BASE_PATH, "login.json"), 'w', encoding="utf-8") as outfile:

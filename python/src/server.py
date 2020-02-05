@@ -2,7 +2,7 @@ import sys
 
 import start_checkup
 import log_config
-from utils import Console, cfg, white, blue2, red
+from utils import Console, cfg, white, red
 from app import app
 
 SHL = Console("Startup")
