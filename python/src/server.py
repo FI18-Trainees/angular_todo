@@ -2,7 +2,7 @@ import sys
 
 import start_checkup
 import log_config
-from utils import Console, cfg, white, blue2, red
+from utils import Console, cfg, white, red
 from app import app
 
 SHL = Console("Startup")
@@ -24,7 +24,7 @@ def run():
         cfg.reload(debug=True)
 
     SHL.output("Starting up.")
-    SHL.output(f"{blue2}Using port: {port}")
+    SHL.info(f"Using port: {port}")
 
     app.run(host='0.0.0.0', port=port)
 

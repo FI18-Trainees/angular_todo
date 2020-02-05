@@ -1,3 +1,4 @@
-from utils import Console, white, green2, red, cfg, blue2
 from .flask_app import app
-from . import routes
+from .routes import static_routes
+from .routes import api_routes
+from .routes import login_routes

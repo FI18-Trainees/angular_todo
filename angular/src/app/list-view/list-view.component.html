@@ -1,6 +1,5 @@
-<div id="openTodos">
-    <h3>Open Todos</h3>
-    <mat-card [id]="todo.id" *ngFor="let todo of openTodos" class="my-2" (click)="showOpenTodoDetails(todo.id)">
+<div>
+    <mat-card *ngFor="let todo of todos | async" class="my-2">
     <mat-card-content class="d-flex">
         <mat-checkbox [id]="todo.id" (change)="todoFinished(todo.id)" (click)="$event.stopPropagation()"></mat-checkbox>
         <div id="openTitle" class="ml-3 flex-grow-1">{{ todo.title }}</div>

@@ -25,13 +25,22 @@ class Console:
             return f'{yellow}[{str(datetime.now()).split(".", 1)[0]}]{white}'
         return f'[{str(datetime.now()).split(".", 1)[0]}]'
 
-    def __init__(self, prefix, cls=False):
+    def __init__(self, prefix: str, cls: bool = False):
         if cls:
             os.system("cls" if os.name == "nt" else "clear")
         self.prefix = f'{green2}[{prefix}]{white}'
 
-    def output(self, text, p=""):
+    def output(self, text: str, p: str = None):
         if p:
             print(f'{self.ts(True)} {green2}[{p}]{white} {str(text)}')
         else:
             print(f'{self.ts(True)} {self.prefix} {str(text)}')
+
+    def info(self, text: str, p: str = None):
+        self.output(text=f"{blue2}{text}{white}", p=p)
+
+    def warning(self, text: str, p: str = None):
+        self.output(text=f"{yellow}{text}{white}", p=p)
+
+    def error(self, text: str, p: str = None):
+        self.output(text=f"{red}{text}{white}", p=p)

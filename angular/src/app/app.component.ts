@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SidenavService } from 'src/services/sidenav.service';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +7,4 @@ import { SidenavService } from 'src/services/sidenav.service';
 })
 export class AppComponent {
   title = 'todo';
-
-  opened = false;
-
-  constructor(private sidenavService: SidenavService) {
-    this.sidenavService.sub().subscribe(() => {
-      this.opened = true;
-    });
-  }
 }
