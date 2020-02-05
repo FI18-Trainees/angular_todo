@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pyotp
 
 from utils import Console, red, white, cfg
-from .runtime_settings import production_mode
+from .runtime_settings import production_mode, unittest_mode
 
 SHL = Console("UserManager")
 
@@ -42,7 +42,7 @@ class __UserManager:
         SHL.info(f"Setting user data.")
         self.username = str(data.get("user", "dummy"))
         self.password = str(data.get("pass", "dummy"))
-        self.token = str(data.get("token", None))
+        self.token = data.get("token", None)
         self.expire_at = datetime.utcnow() + timedelta(seconds=cfg.get("token_expire_seconds", 86400))
         self.use_2fa = bool(data.get("use2fa", False))
         self.token_2fa = data.get("token_2fa", None)
@@ -62,24 +62,6 @@ class __UserManager:
     def login(self, username: str, password: str) -> bool:
         SHL.info(f"Check credentials for '{username}' and password length {len(password)}.")
         return username == self.username and check_password_hash(self.password, password)
-
-    def get_temp_token(self) -> str:
-        SHL.info(f"Generating temp token for 2fa authentication.")
-        if not self.temp_token:
-            self.temp_token = str(uuid.uuid4())
-            self.temp_token_expire_at = datetime.utcnow() + timedelta(seconds=30)
-        if self.temp_token_expire_at < datetime.utcnow():
-            self.temp_token = str(uuid.uuid4())
-            self.temp_token_expire_at = datetime.utcnow() + timedelta(seconds=30)
-        return self.temp_token
-
-    def check_temp_token(self, token: str) -> bool:
-        SHL.info(f"Checking temp token for 2fa authentication.")
-        if not self.temp_token:
-            return False
-        if self.temp_token_expire_at < datetime.utcnow():
-            return False
-        return self.temp_token == token
 
     def set_password(self, new: str) -> bool:
         SHL.info(f"Resetting password, length: {len(new)}.")
@@ -114,10 +96,10 @@ class __UserManager:
             return False
         return self.token == token
 
-    def get_new_2fa_token(self) -> str:
+    def get_new_2fa_token(self) -> (str, str):
         SHL.info(f"Initialized 2fa setup.")
         self.token_2fa_temp = pyotp.random_base32()
-        return pyotp.TOTP(self.token_2fa_temp).provisioning_uri(f"{self.username}", issuer_name="TODO")
+        return self.token_2fa_temp, pyotp.TOTP(self.token_2fa_temp).provisioning_uri(f"{self.username}", issuer_name="TODO")
 
     def check_2fa_temp_token(self, totp_token: str) -> bool:
         SHL.info(f"Checking 2fa token to validate setup.")
@@ -156,9 +138,9 @@ class __UserManager:
         data = {
           "user": self.username,
           "pass": self.password,
-          "token": self.token,
-          "use2fa": self.use_2fa,
-          "token_2fa": self.token_2fa
+          "token": str(self.token) if self.token else None,
+          "use2fa": str(self.use_2fa) if self.use_2fa else None,
+          "token_2fa": str(self.token_2fa) if self.token_2fa else None
         }
         try:
             with open(os.path.join(BASE_PATH, "login.json"), 'w', encoding="utf-8") as outfile:

@@ -1,2 +1,2 @@
-from .dummy_test import DummyTest
-from .dummy_api_test import TestAPI
+from .api_test import TestAPI
+from .authentication_test import TestAuthenticationAccess
