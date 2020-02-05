@@ -3,6 +3,9 @@ import { MatSidenavModule, MatCheckboxModule, MatDividerModule } from '@angular/
 
 import { SidenavComponent } from './sidenav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Priority } from 'src/enums/priority.enum';
+import { By } from '@angular/platform-browser';
+import { Todo } from 'src/interfaces/todo';
 
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
@@ -29,5 +32,29 @@ describe('SidenavComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('details should be displayed', () => {
+    const now = new Date(Date.now());
+    const testTodo: Todo = {
+      title: 'testValue',
+      id: 0,
+      finished: false,
+      priority: Priority.normal,
+      list: 'testList',
+      address: 'testAddress',
+      description: 'testDescription',
+      due_date: now,
+      reminder: now,
+      subtask: ['testSubtask1', 'testSubtask2']
+    };
+    component.displayedTodo = testTodo;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.header')).nativeElement.innerHTML).toContain(testTodo.title);
+    expect(fixture.debugElement.query(By.css('.details')).nativeElement.innerHTML).toContain(testTodo.due_date.toLocaleDateString());
+    expect(fixture.debugElement.query(By.css('.details')).nativeElement.innerHTML).toContain(testTodo.reminder.toLocaleDateString());
+    expect(fixture.debugElement.query(By.css('.details')).nativeElement.innerHTML).toContain(testTodo.priority);
+    expect(fixture.debugElement.query(By.css('.details')).nativeElement.innerHTML).toContain(testTodo.address);
+    expect(fixture.debugElement.query(By.css('.details')).nativeElement.innerHTML).toContain(testTodo.description);
   });
 });
