@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription, Observer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Todo } from 'src/interfaces/todo';
 import { TodoService } from 'src/services/todo.service';
-import { MatCheckboxChange } from '@angular/material';
 import { SidenavService } from 'src/services/sidenav.service';
 
 @Component({
@@ -47,10 +46,10 @@ export class ListViewComponent implements OnInit, OnDestroy {
   }
 
   showOpenTodoDetails(id: number) {
-    this.sidenavService.open(this.openTodos[id]);
+    this.sidenavService.open(this.openTodos.find(item => item.id === id));
   }
 
   showFinishedTodoDetails(id: number) {
-    this.sidenavService.open(this.finishedTodos[id]);
+    this.sidenavService.open(this.finishedTodos.find(item => item.id === id));
   }
 }
