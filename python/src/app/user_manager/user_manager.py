@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pyotp
 
 from utils import Console, red, white, cfg
-from .runtime_settings import production_mode, unittest_mode
+from app.runtime_settings import production_mode, unittest_mode
 
 SHL = Console("UserManager")
 
@@ -16,6 +16,8 @@ SHL.info(f"Initializing UserManager.")
 
 BASE_PATH = os.path.dirname(__file__)
 login_file = "login.json" if os.path.isfile(os.path.join(BASE_PATH, "login.json")) else "login-default.json"
+if unittest_mode:
+    login_file = "login-unittest.json"
 LOGIN_INFO = os.path.join(BASE_PATH, login_file)
 SHL.info(f"Login info in file {LOGIN_INFO}")
 
