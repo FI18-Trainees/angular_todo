@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /python/src/app/public
+__pycache__
 # Only exists if Bazel was run
 /bazel-out
 

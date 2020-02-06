@@ -10,7 +10,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   addTodo(todo: Todo) {
-    this.http.post('/api/todo', JSON.stringify(todo));
+    this.http.post('http://localhost:5000/api/todo', JSON.stringify(todo));
   }
 
   getTodos(): Todo[] {

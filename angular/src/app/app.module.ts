@@ -59,6 +59,7 @@ import { InputComponent } from './input/input.component';
 import { ListViewComponent } from './list-view/list-view.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { FormsModule } from '@angular/forms';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
