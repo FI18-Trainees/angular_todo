@@ -7,4 +7,4 @@ class TestAPI(unittest.TestCase):
         # ===========================================================================
         print("Testing '/' endpoint")
         r = requests.get("http://127.0.0.1:5000/")
-        self.assertEqual(r.text, "OK")
+        self.assertEqual(r.status_code, 200)
