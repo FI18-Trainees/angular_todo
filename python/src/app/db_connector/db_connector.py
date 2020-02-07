@@ -3,7 +3,7 @@ import pymysql
 
 pymysql.install_as_MySQLdb()
 
-engine = db.create_engine("mysql://default:default@localhost:3306/todo")  # sqlalchemy.exc.OperationalError
+engine = db.create_engine()  # sqlalchemy.exc.OperationalError
 
 connection = engine.connect()
 metadata = db.MetaData()
