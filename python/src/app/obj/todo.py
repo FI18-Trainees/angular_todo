@@ -15,7 +15,7 @@ class Todo:
                 self.title = to_parse["title"]
                 self.finished = bool(to_parse["finished"])
                 self.list_id = int(to_parse["list_id"])
-                if self.title.strip().lower() in ["none", "null", ""]:
+                if str(self.title).strip().lower() in ["none", "null", ""]:
                     SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
                     raise CreationError(raw=to_parse)
             except KeyError:
@@ -33,7 +33,12 @@ class Todo:
             except TypeError:
                 self.item_id = None
             if to_parse.get("due_date"):
-                self.due_date = dateutil.parser.isoparse(to_parse.get("due_date"))
+                try:
+                    self.due_date = dateutil.parser.isoparse(to_parse.get("due_date"))
+                except ValueError:
+                    self.due_date = None
+                except TypeError:
+                    self.due_date = None
             else:
                 self.due_date = None
             self.address = to_parse.get("address")
@@ -42,9 +47,14 @@ class Todo:
                 self.priority = int(to_parse.get("priority", 0))
             except ValueError:
                 self.priority = 0
-            self.subtasks = to_parse.get("subtasks", [])
+            self.subtasks = to_parse.get("subtasks")
             if to_parse.get("reminder"):
-                self.reminder = dateutil.parser.isoparse(to_parse.get("reminder"))
+                try:
+                    self.reminder = dateutil.parser.isoparse(to_parse.get("reminder"))
+                except ValueError:
+                    self.reminder = None
+                except TypeError:
+                    self.reminder = None
             else:
                 self.reminder = None
 
@@ -55,6 +65,9 @@ class Todo:
                 self.title = to_parse.title
                 self.finished = bool(to_parse.finished)
                 self.list_id = int(to_parse.list_id)
+                if str(self.title).strip().lower() in ["none", "null", ""]:
+                    SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
+                    raise CreationError(raw=to_parse)
             except KeyError:
                 SHL.error(f"Failed creating Todo. Mandatory key missing.")
                 raise CreationError(raw=to_parse)
@@ -64,7 +77,12 @@ class Todo:
 
             # optional
             if to_parse.due_date:
-                self.due_date = dateutil.parser.isoparse(to_parse.due_date)
+                try:
+                    self.due_date = dateutil.parser.isoparse(to_parse.due_date)
+                except ValueError:
+                    self.due_date = None
+                except TypeError:
+                    self.due_date = None
             else:
                 self.due_date = None
             self.address = to_parse.address
@@ -75,7 +93,12 @@ class Todo:
                 self.priority = 0
             self.subtasks = to_parse.subtasks
             if to_parse.reminder:
-                self.reminder = dateutil.parser.isoparse(to_parse.reminder)
+                try:
+                    self.reminder = dateutil.parser.isoparse(to_parse.reminder)
+                except ValueError:
+                    self.reminder = None
+                except TypeError:
+                    self.reminder = None
             else:
                 self.reminder = None
 
@@ -87,6 +110,7 @@ class Todo:
     def to_json(self) -> dict:
         return {
             "item_id": int(self.item_id),
+            "list_id": int(self.list_id),
             "title": self.title,
             "finished": bool(self.finished),
             "due_date": self.due_date.isoformat() if self.due_date else None,
@@ -100,6 +124,7 @@ class Todo:
     def to_sql_obj(self) -> SQLTodo:
         x = SQLTodo(
             title=self.title,
+            list_id=int(self.list_id),
             finished=int(self.finished),
             due_date=self.due_date,
             address=self.address,

@@ -17,7 +17,7 @@ SHL = Console("Routes")
 def api_todo():
     if request.method == "GET":
         if request.args.get("list_id"):
-            SHL.info(f"Returning TodoList by list_id", f"GET /api/todo")
+            SHL.info(f"Returning Todo by list_id", f"GET /api/todo")
             try:
                 list_id = int(request.args.get("list_id"))
             except ValueError:
@@ -56,7 +56,7 @@ def api_todo():
                     "data": None
                 })
         elif request.args.get("item_id"):
-            SHL.info(f"Returning TodoList by item_id", f"GET /api/todo")
+            SHL.info(f"Returning Todo by item_id", f"GET /api/todo")
             try:
                 item_id = int(request.args.get("item_id"))
             except ValueError:
@@ -95,6 +95,7 @@ def api_todo():
                     "data": None
                 })
         else:
+            SHL.info(f"Returning Todo", f"GET /api/todo")
             try:
                 received_entries = [x for x in db_interface.todo_select_all()]
             except DatabaseError:
@@ -155,8 +156,8 @@ def api_todo():
 @token_auth.login_required
 def api_todo_list():
     if request.method == "GET":
-        SHL.info(f"Returning TodoList", f"GET /api/todolist")
         if request.args.get("list_id"):
+            SHL.info(f"Returning TodoList by list_id", f"GET /api/todolist")
             try:
                 list_id = int(request.args.get("list_id"))
             except ValueError:
@@ -194,6 +195,7 @@ def api_todo_list():
                     "message": "no entries found.",
                     "data": None
                 })
+        SHL.info(f"Returning TodoList", f"GET /api/todolist")
         try:
             received_entries = [x for x in db_interface.todo_list_select_all()]
         except DatabaseError:

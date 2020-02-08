@@ -28,17 +28,17 @@ class TodoListInsertOrUpdate(object):
 
 
 class TodoSelectAll(object):
-    def go(self, session) -> List[SQLTodoList]:
+    def go(self, session) -> List[SQLTodo]:
         return session.query(SQLTodo)
 
 
 class TodoSelectByListId(object):
-    def go(self, session, list_id: int) -> List[SQLTodoList]:
+    def go(self, session, list_id: int) -> List[SQLTodo]:
         return session.query(SQLTodo).filter(SQLTodo.list_id == list_id).all()
 
 
 class TodoSelectByItemId(object):
-    def go(self, session, item_id: int) -> SQLTodoList:
+    def go(self, session, item_id: int) -> SQLTodo:
         return session.query(SQLTodo).filter(SQLTodo.item_id == item_id).one()
 
 
@@ -109,21 +109,22 @@ class __DatabaseInterface:
                 SHL.error(f"Error in db session. {e}")
                 raise DatabaseError(e)
 
-    def todo_select_all(self) -> List[TodoList]:
+    def todo_select_all(self) -> List[Todo]:
         SHL.info(f"Selecting all entries of Todo table.")
         with self.session_scope() as session:
             try:
                 for e in TodoSelectAll().go(session):
                     try:
-                        yield TodoList(e)
+                        yield Todo(e)
                     except CreationError:
                         continue
             except OperationalError as e:
+                SHL.error("here")
                 SHL.error(f"Error in db session. {e}")
                 raise DatabaseError(e)
             return []
 
-    def todo_select_by_list_id(self, list_id: int) -> List[TodoList]:
+    def todo_select_by_list_id(self, list_id: int) -> List[Todo]:
         SHL.info(f"Selecting all entries of Todo table with list_id '{list_id}'.")
         with self.session_scope() as session:
             try:

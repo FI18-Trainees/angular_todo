@@ -141,7 +141,7 @@ class __UserManager:
           "user": self.username,
           "pass": self.password,
           "token": str(self.token) if self.token else None,
-          "use2fa": str(self.use_2fa) if self.use_2fa else None,
+          "use2fa": bool(self.use_2fa) if self.use_2fa else None,
           "token_2fa": str(self.token_2fa) if self.token_2fa else None
         }
         try:

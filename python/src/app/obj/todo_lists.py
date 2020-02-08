@@ -13,7 +13,7 @@ class TodoList:
             # mandatory
             try:
                 self.name = to_parse["name"]
-                if self.name.strip().lower() in ["none", "null", ""]:
+                if str(self.name).strip().lower() in ["none", "null", ""]:
                     SHL.error(f"Failed creating TodoList. Invalid mandatory keys provided.")
                     raise CreationError(raw=to_parse)
             except KeyError:
@@ -31,7 +31,12 @@ class TodoList:
             except TypeError:
                 self.list_id = None
             if to_parse.get("created_at"):
-                self.created_at = dateutil.parser.isoparse(to_parse.get("created_at"))
+                try:
+                    self.created_at = dateutil.parser.isoparse(to_parse.get("created_at"))
+                except ValueError:
+                    self.created_at = None
+                except TypeError:
+                    self.created_at = None
             else:
                 self.created_at = None
             self.hex_color = to_parse.get("hex_color")
@@ -41,6 +46,9 @@ class TodoList:
             try:
                 self.list_id = int(to_parse.list_id)
                 self.name = to_parse.name
+                if str(self.name).strip().lower() in ["none", "null", ""]:
+                    SHL.error(f"Failed creating TodoList. Invalid mandatory keys provided.")
+                    raise CreationError(raw=to_parse)
             except AttributeError:
                 SHL.error(f"Failed creating TodoList. Mandatory key missing.")
                 raise CreationError(raw=to_parse)
@@ -50,7 +58,12 @@ class TodoList:
 
             # optional
             if to_parse.created_at:
-                self.created_at = dateutil.parser.isoparse(str(to_parse.created_at))
+                try:
+                    self.created_at = dateutil.parser.isoparse(str(to_parse.created_at))
+                except ValueError:
+                    self.created_at = None
+                except TypeError:
+                    self.created_at = None
             else:
                 self.created_at = None
             self.hex_color = to_parse.hex_color

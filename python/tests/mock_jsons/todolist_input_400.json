@@ -1,0 +1,19 @@
+[
+  {
+    "name": "",
+    "description": "some description",
+    "hex_color": "#FFFFFF",
+    "created_at": "2020-02-08T20:52:15.945269"
+  },
+  {
+    "list_id": 5,
+    "description": "some description",
+    "hex_color": "#FFFFFF"
+  },
+  {
+    "name": null,
+    "description": "",
+    "hex_color": "#FFFFFF",
+    "created_at": "2020-02-08T20:52:15.945269"
+  }
+]
