@@ -12,6 +12,8 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE DATABASE todo;
+USE todo;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,7 +33,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `todos` (
   `item_id` int(11) NOT NULL,
   `list_id` int(11) NOT NULL COMMENT 'FK',
-  `title` int(25) NOT NULL,
+  `title` varchar(25) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
   `finished` tinyint(1) NOT NULL DEFAULT 0,
   `due_date` timestamp NULL DEFAULT current_timestamp(),

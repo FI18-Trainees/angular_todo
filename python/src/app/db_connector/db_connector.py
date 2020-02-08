@@ -1,19 +1,28 @@
+import json
+import os
+
 import sqlalchemy as db
 import pymysql
 
+from utils import Console
+
+SHL = Console("DB_Connector")
+
 pymysql.install_as_MySQLdb()
 
-engine = db.create_engine()  # sqlalchemy.exc.OperationalError
+CONFIG_PATH = os.path.join("app", "db_connector", "connection.json")
+with open(CONFIG_PATH, 'r', encoding="utf-8") as c:
+    data = json.load(c)
+try:
+    connection_string = data["connection_string"]
+except KeyError:
+    SHL.error(f"connection string not found. Cannot connect to database.")
 
-connection = engine.connect()
-metadata = db.MetaData()
 
-table = db.Table("todo_lists", metadata, autoload=True, autoload_with=engine)
-
-query = db.select([table])
-
-result_proxy = connection.execute(query)
-
-result_set = result_proxy.fetchall()
-
-print(result_set)
+class DatabaseConnection:
+    def __init__(self):
+        SHL.info(f"Setting up database connection.")
+        try:
+            self.engine = db.create_engine(connection_string)
+        except Exception:
+            SHL.error(f"Could not connect to database.")
