@@ -33,7 +33,7 @@ jobs:
 
     - name: Dump data into MySQL
       run : |
-        mysql -u root -p default < python/setup_db.sql
+        mysql -u root -p todo < python/setup_db.sql
 
     - name: Unittests
       run: |
