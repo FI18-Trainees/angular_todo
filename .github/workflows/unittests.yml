@@ -29,7 +29,6 @@ jobs:
 
     - name: Dump data into MySQL
       run : |
-        mysqladmin -u root password 'default' (with the quotes)
         mysqladmin -u root -p default status
         sudo chmod -R 755 /var/lib/mysql/
         mysql -u root -p default todo < python/setup_db.sql
