@@ -1,5 +1,5 @@
 name: Unittests
-on: [push]
+on: [pullrequest]
 
 jobs:
   Py37_Ubuntu1804:
