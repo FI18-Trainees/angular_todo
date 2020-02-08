@@ -16,42 +16,7 @@ SHL = Console("Routes")
 @app.route("/")
 @limiter.exempt
 def index():
-    try:
-        x = []
-        for e in db_interface.todo_list_select_all():
-            x.append(e.to_json())
-        return jsonify(x)
-    except DatabaseError:
-        return "error"
-
-
-@app.route("/1")
-@limiter.exempt
-def test():
-    try:
-        x = db_interface.todo_list_select_by_list_id(list_id=5)
-        if x:
-            return x.to_json()
-        return "none"
-    except DatabaseError:
-        return "error"
-
-
-@app.route("/2")
-def test2():
-    a = SQLTodoList(
-        name="name1",
-        description="dawdaw",
-        hex_color="#454545",
-        created_at=datetime.now()
-    )
-    try:
-        x = db_interface.todo_list_insert(insert_obj=a)
-        print(x)
-        print(type(x))
-        return "OK"
-    except DatabaseError:
-        return "error"
+    return "OK"
 
 
 @app.route("/401")
