@@ -1,3 +1,0 @@
-{
-  "connection_string": "mysql://default:default@localhost:3306/todo"
-}

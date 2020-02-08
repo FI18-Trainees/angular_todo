@@ -4,19 +4,13 @@ import os
 import sqlalchemy as db
 import pymysql
 
-from utils import Console
+from utils import Console, cfg
 
 SHL = Console("DB_Connector")
 
 pymysql.install_as_MySQLdb()
 
-CONFIG_PATH = os.path.join("app", "db_connector", "connection.json")
-with open(CONFIG_PATH, 'r', encoding="utf-8") as c:
-    data = json.load(c)
-try:
-    connection_string = data["connection_string"]
-except KeyError:
-    SHL.error(f"connection string not found. Cannot connect to database.")
+connection_string = cfg.get("connection_string")
 
 
 class DatabaseConnection:
