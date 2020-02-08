@@ -33,6 +33,8 @@ jobs:
 
     - name: Dump data into MySQL
       run : |
+        mysqladmin -u root -p status
+        sudo chmod -R 755 /var/lib/mysql/
         mysql -u root -p todo < python/setup_db.sql
 
     - name: Unittests
