@@ -19,7 +19,7 @@ jobs:
 
     - name: Dump data into MySQL
       run : |
-        mysql -u root -p root < python/setup_db.sql
+        mysql --user=root --password=root < python/setup_db.sql
 
     - name: Unittests
       run: |
