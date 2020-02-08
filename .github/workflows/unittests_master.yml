@@ -20,6 +20,10 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
@@ -41,6 +45,10 @@ jobs:
         cd python
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
+
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
 
     - name: Unittests
       run: |
@@ -64,6 +72,10 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
@@ -85,6 +97,10 @@ jobs:
         cd python
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
+
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
 
     - name: Unittests
       run: |
