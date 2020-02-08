@@ -7,5 +7,7 @@ from unittests import TestAuthenticationAccess as test_b
 
 
 if __name__ == '__main__':
-    time.sleep(10)
+    seconds = 10
+    print(f"Waiting {seconds} seconds for server to start.")
+    time.sleep(seconds)
     unittest.main()

@@ -2,44 +2,115 @@ import dateutil.parser
 
 from utils import Console
 from .errors import CreationError
+from .sql_types import SQLTodo
 
 SHL = Console("Todo")
 
 
 class Todo:
-    def __init__(self, **kwargs):
-        # mandatory
-        try:
-            self.id = int(kwargs["id"])
-            self.title = kwargs["title"]
-            self.finished = bool(kwargs["finished"])
-        except KeyError:
-            SHL.error(f"Failed creating Todo. Mandatory key missing.")
-            raise CreationError(raw=kwargs)
-        except ValueError:
-            SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
-            raise CreationError(raw=kwargs)
+    def __init__(self, to_parse):
+        if isinstance(to_parse, dict):
+            # mandatory
+            try:
+                self.title = to_parse["title"]
+                self.finished = bool(to_parse["finished"])
+                self.list_id = int(to_parse["list_id"])
+                if str(self.title).strip().lower() in ["none", "null", ""]:
+                    SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
+                    raise CreationError(raw=to_parse)
+            except KeyError:
+                SHL.error(f"Failed creating Todo. Mandatory key missing.")
+                raise CreationError(raw=to_parse)
+            except ValueError:
+                SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
+                raise CreationError(raw=to_parse)
 
-        # optional
-        if kwargs.get("date"):
-            self.due_date = dateutil.parser.isoparse(kwargs.get("date"))
+            # optional
+            try:
+                self.item_id = int(to_parse.get("item_id"))
+            except ValueError:
+                self.item_id = None
+            except TypeError:
+                self.item_id = None
+            if to_parse.get("due_date"):
+                try:
+                    self.due_date = dateutil.parser.isoparse(to_parse.get("due_date"))
+                except ValueError:
+                    self.due_date = None
+                except TypeError:
+                    self.due_date = None
+            else:
+                self.due_date = None
+            self.address = to_parse.get("address")
+            self.description = to_parse.get("description")
+            try:
+                self.priority = int(to_parse.get("priority", 0))
+            except ValueError:
+                self.priority = 0
+            self.subtasks = to_parse.get("subtasks")
+            if to_parse.get("reminder"):
+                try:
+                    self.reminder = dateutil.parser.isoparse(to_parse.get("reminder"))
+                except ValueError:
+                    self.reminder = None
+                except TypeError:
+                    self.reminder = None
+            else:
+                self.reminder = None
+
+        elif isinstance(to_parse, SQLTodo):
+            # mandatory
+            try:
+                self.item_id = int(to_parse.item_id)
+                self.title = to_parse.title
+                self.finished = bool(to_parse.finished)
+                self.list_id = int(to_parse.list_id)
+                if str(self.title).strip().lower() in ["none", "null", ""]:
+                    SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
+                    raise CreationError(raw=to_parse)
+            except KeyError:
+                SHL.error(f"Failed creating Todo. Mandatory key missing.")
+                raise CreationError(raw=to_parse)
+            except ValueError:
+                SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
+                raise CreationError(raw=to_parse)
+
+            # optional
+            if to_parse.due_date:
+                try:
+                    self.due_date = dateutil.parser.isoparse(to_parse.due_date)
+                except ValueError:
+                    self.due_date = None
+                except TypeError:
+                    self.due_date = None
+            else:
+                self.due_date = None
+            self.address = to_parse.address
+            self.description = to_parse.description
+            try:
+                self.priority = int(to_parse.priority)
+            except ValueError:
+                self.priority = 0
+            self.subtasks = to_parse.subtasks
+            if to_parse.reminder:
+                try:
+                    self.reminder = dateutil.parser.isoparse(to_parse.reminder)
+                except ValueError:
+                    self.reminder = None
+                except TypeError:
+                    self.reminder = None
+            else:
+                self.reminder = None
+
         else:
-            self.due_date = None
-        self.address = kwargs.get("address")
-        self.description = kwargs.get("description")
-        try:
-            self.priority = int(kwargs.get("priority", 0))
-        except ValueError:
-            self.priority = 0
-        self.subtasks = kwargs.get("subtasks", [])
-        if kwargs.get("reminder"):
-            self.reminder = dateutil.parser.isoparse(kwargs.get("reminder"))
-        else:
-            self.reminder = None
+            SHL.error(f"Failed creating Todo. Invalid internal input type.")
+            SHL.error(f"Type provided: {type(to_parse)}")
+            raise CreationError(raw=to_parse)
 
     def to_json(self) -> dict:
         return {
-            "id": int(self.id),
+            "item_id": int(self.item_id),
+            "list_id": int(self.list_id),
             "title": self.title,
             "finished": bool(self.finished),
             "due_date": self.due_date.isoformat() if self.due_date else None,
@@ -49,3 +120,19 @@ class Todo:
             "subtasks": self.subtasks,
             "reminder": self.reminder.isoformat() if self.reminder else None
         }
+
+    def to_sql_obj(self) -> SQLTodo:
+        x = SQLTodo(
+            title=self.title,
+            list_id=int(self.list_id),
+            finished=int(self.finished),
+            due_date=self.due_date,
+            address=self.address,
+            description=self.description,
+            priority=int(self.priority),
+            subtasks=self.subtasks,
+            reminder=self.reminder
+        )
+        if self.item_id:
+            x.item_id = self.item_id
+        return x

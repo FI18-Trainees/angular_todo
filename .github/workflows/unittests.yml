@@ -17,12 +17,16 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
         python server.py -unittest &
-        cd ..
-        python tests/start.py
+        cd ../tests
+        python start.py
 
   Py37_Ubuntu1604:
     runs-on: ubuntu-18.04
@@ -39,12 +43,16 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
         python server.py -unittest &
-        cd ..
-        python tests/start.py
+        cd ../tests
+        python start.py
 
   Py36_Ubuntu1804:
     runs-on: ubuntu-18.04
@@ -61,12 +69,16 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
         python server.py -unittest &
-        cd ..
-        python tests/start.py
+        cd ../tests
+        python start.py
 
   Py36_Ubuntu1604:
     runs-on: ubuntu-18.04
@@ -83,9 +95,13 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Dump data into MySQL
+      run : |
+        mysql --user=root --password=root < python/setup_db.sql
+
     - name: Unittests
       run: |
         cd python/src
         python server.py -unittest &
-        cd ..
-        python tests/start.py
+        cd ../tests
+        python start.py
