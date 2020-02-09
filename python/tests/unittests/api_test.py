@@ -25,6 +25,7 @@ class TestAPI(unittest.TestCase):
         print("Testing POST '/api/todolist' endpoint")
         print("Testing generation with different inputs.")
         data = read_json(os.path.join("mock_jsons", "todolist_input_200.json"))
+        expecting_length = len(data) + 1  # +1 for default list created by sql script.
         for d in data:
             print(f"Testing data: {d}")
             r = requests.post(url + "/api/todolist", cookies=cookies, data=json.dumps(d))
@@ -42,6 +43,7 @@ class TestAPI(unittest.TestCase):
         r = requests.get(url + "/api/todolist", cookies=cookies)
         self.assertEqual(r.status_code, 200)
         self.assertTrue(r.json(), list)
+        self.assertEqual(len(r.json()["data"]), expecting_length)
         # ===========================================================================
         print("Testing GET '/api/todolist?list_id=1' endpoint")
         r = requests.get(url + "/api/todolist?list_id=1", cookies=cookies)
@@ -52,6 +54,7 @@ class TestAPI(unittest.TestCase):
         print("Testing POST '/api/todo' endpoint")
         print("Testing generation with different inputs.")
         data = read_json(os.path.join("mock_jsons", "todo_input_200.json"))
+        expecting_length = len(data)
         for d in data:
             print(f"Testing data: {d}")
             r = requests.post(url + "/api/todo", cookies=cookies, data=json.dumps(d))
@@ -69,6 +72,7 @@ class TestAPI(unittest.TestCase):
         r = requests.get(url + "/api/todo", cookies=cookies)
         self.assertEqual(r.status_code, 200)
         self.assertTrue(r.json(), list)
+        self.assertEqual(len(r.json()["data"]), expecting_length)
         # ===========================================================================
         print("Testing GET '/api/todo?list_id=1' endpoint")
         r = requests.get(url + "/api/todo?list_id=1", cookies=cookies)
