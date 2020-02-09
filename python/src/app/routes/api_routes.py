@@ -129,10 +129,10 @@ def api_todo():
         try:
             request_data.pop("item_id", None)
             db_interface.todo_insert_or_update(obj=Todo(to_parse=request_data).to_sql_obj())
-        except CreationError:
+        except CreationError as e:
             return make_response(jsonify({
                 "status": "failed",
-                "message": "mandatory keys missing"
+                "message": e.get_error_message()
             }), 400)
         except DatabaseError:
             return make_response(jsonify({
@@ -228,11 +228,12 @@ def api_todo_list():
             }), 400)
         try:
             request_data.pop("list_id", None)
+            request_data.pop("created_at", None)
             db_interface.todo_list_insert_or_update(obj=TodoList(to_parse=request_data).to_sql_obj())
-        except CreationError:
+        except CreationError as e:
             return make_response(jsonify({
                 "status": "failed",
-                "message": "mandatory keys missing"
+                "message": e.get_error_message()
             }), 400)
         except DatabaseError:
             return make_response(jsonify({

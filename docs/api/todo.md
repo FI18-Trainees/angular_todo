@@ -106,7 +106,7 @@ StatusCode: `400`
 ```json
 {
     "status": "failed",
-    "message": "mandatory keys missing"
+    "message": "describes missing or invalid value"
 }
 ```
 
@@ -214,7 +214,7 @@ StatusCode: `400`
 ```json
 {
     "status": "failed",
-    "message": "mandatory keys missing"
+    "message": "describes missing or invalid value"
 }
 ```
 

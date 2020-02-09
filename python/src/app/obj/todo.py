@@ -1,111 +1,84 @@
 import dateutil.parser
 
 from utils import Console
-from .errors import CreationError
+from .errors import CreationError, DataMissingError, InvalidValueError, InvalidInputTypeError
 from .sql_types import SQLTodo
 
 SHL = Console("Todo")
 
 
+def return_raw(raw):
+    return raw
+
+
+def get_value_and_parse(raw, key_attribute: str, parse_method, optional: bool = True, default=None):
+    if isinstance(raw, dict):
+        try:
+            value = raw[key_attribute]
+        except KeyError:
+            value = default
+            if not optional:
+                SHL.error(f"Failed creating Todo. Mandatory key '{key_attribute}' missing.")
+                raise DataMissingError(missing_key=key_attribute)
+    else:
+        try:
+            value = raw.__getattribute__(key_attribute)
+        except AttributeError:
+            value = default
+            if not optional:
+                SHL.error(f"Failed creating Todo. Mandatory key '{key_attribute}' missing.")
+                raise DataMissingError(missing_key=key_attribute)
+
+    if value is not None:
+        try:
+            value = parse_method(value)
+            if parse_method == str:
+                if value.strip().lower() in ["none", "null", ""]:
+                    SHL.error(f"Failed creating Todo. Invalid key '{key_attribute}' provided.")
+                    raise InvalidValueError(name_of_invalid=key_attribute)
+            return value
+        except ValueError:
+            SHL.error(f"Failed creating Todo. Invalid key '{key_attribute}' provided.")
+            raise InvalidValueError(name_of_invalid=key_attribute)
+        except TypeError:
+            SHL.error(f"Failed creating Todo. Invalid key '{key_attribute}' provided.")
+            raise InvalidValueError(name_of_invalid=key_attribute)
+    else:
+        if isinstance(raw, SQLTodo):
+            return None
+        if optional:
+            return default
+        else:
+            SHL.error(f"Failed creating Todo. Mandatory key '{key_attribute}' missing.")
+            raise DataMissingError(missing_key=key_attribute)
+
+
 class Todo:
     def __init__(self, to_parse):
-        if isinstance(to_parse, dict):
+        if any([isinstance(to_parse, x) for x in [dict, SQLTodo]]):  # check for valid inputs
             # mandatory
-            try:
-                self.title = to_parse["title"]
-                self.finished = bool(to_parse["finished"])
-                self.list_id = int(to_parse["list_id"])
-                if str(self.title).strip().lower() in ["none", "null", ""]:
-                    SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
-                    raise CreationError(raw=to_parse)
-            except KeyError:
-                SHL.error(f"Failed creating Todo. Mandatory key missing.")
-                raise CreationError(raw=to_parse)
-            except ValueError:
-                SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
-                raise CreationError(raw=to_parse)
+            self.title = get_value_and_parse(to_parse, "title", parse_method=str, optional=False)
+            self.finished = get_value_and_parse(to_parse, "finished", parse_method=bool, optional=False)
+            self.list_id = get_value_and_parse(to_parse, "list_id", parse_method=int, optional=False)
 
             # optional
-            try:
-                self.item_id = int(to_parse.get("item_id"))
-            except ValueError:
-                self.item_id = None
-            except TypeError:
-                self.item_id = None
-            if to_parse.get("due_date"):
-                try:
-                    self.due_date = dateutil.parser.isoparse(to_parse.get("due_date"))
-                except ValueError:
-                    self.due_date = None
-                except TypeError:
-                    self.due_date = None
-            else:
-                self.due_date = None
-            self.address = to_parse.get("address")
-            self.description = to_parse.get("description")
-            try:
-                self.priority = int(to_parse.get("priority", 0))
-            except ValueError:
-                self.priority = 0
-            self.subtasks = to_parse.get("subtasks")
-            if to_parse.get("reminder"):
-                try:
-                    self.reminder = dateutil.parser.isoparse(to_parse.get("reminder"))
-                except ValueError:
-                    self.reminder = None
-                except TypeError:
-                    self.reminder = None
-            else:
-                self.reminder = None
+            self.address = get_value_and_parse(to_parse, "address", parse_method=str)
+            self.description = get_value_and_parse(to_parse, "description", parse_method=str)
+            self.subtasks = get_value_and_parse(to_parse, "subtasks", parse_method=str)
+            self.priority = get_value_and_parse(to_parse, "priority", parse_method=int, default=0)
 
-        elif isinstance(to_parse, SQLTodo):
-            # mandatory
-            try:
-                self.item_id = int(to_parse.item_id)
-                self.title = to_parse.title
-                self.finished = bool(to_parse.finished)
-                self.list_id = int(to_parse.list_id)
-                if str(self.title).strip().lower() in ["none", "null", ""]:
-                    SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
-                    raise CreationError(raw=to_parse)
-            except KeyError:
-                SHL.error(f"Failed creating Todo. Mandatory key missing.")
-                raise CreationError(raw=to_parse)
-            except ValueError:
-                SHL.error(f"Failed creating Todo. Invalid mandatory keys provided.")
-                raise CreationError(raw=to_parse)
-
-            # optional
-            if to_parse.due_date:
-                try:
-                    self.due_date = dateutil.parser.isoparse(to_parse.due_date)
-                except ValueError:
-                    self.due_date = None
-                except TypeError:
-                    self.due_date = None
+            if isinstance(to_parse, dict):
+                self.item_id = get_value_and_parse(to_parse, "item_id", parse_method=int)
+                self.due_date = get_value_and_parse(to_parse, "due_date", parse_method=dateutil.parser.isoparse)
+                self.reminder = get_value_and_parse(to_parse, "reminder", parse_method=dateutil.parser.isoparse)
             else:
-                self.due_date = None
-            self.address = to_parse.address
-            self.description = to_parse.description
-            try:
-                self.priority = int(to_parse.priority)
-            except ValueError:
-                self.priority = 0
-            self.subtasks = to_parse.subtasks
-            if to_parse.reminder:
-                try:
-                    self.reminder = dateutil.parser.isoparse(to_parse.reminder)
-                except ValueError:
-                    self.reminder = None
-                except TypeError:
-                    self.reminder = None
-            else:
-                self.reminder = None
-
+                self.item_id = get_value_and_parse(to_parse, "item_id", parse_method=int, optional=False)
+                self.due_date = get_value_and_parse(to_parse, "due_date", parse_method=return_raw)
+                self.reminder = get_value_and_parse(to_parse, "reminder", parse_method=return_raw)
         else:
             SHL.error(f"Failed creating Todo. Invalid internal input type.")
             SHL.error(f"Type provided: {type(to_parse)}")
-            raise CreationError(raw=to_parse)
+            raise InvalidInputTypeError(type_provided=str(type(to_parse)))
 
     def to_json(self) -> dict:
         return {
