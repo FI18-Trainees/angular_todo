@@ -8,6 +8,10 @@ from .sql_types import SQLTodoList
 SHL = Console("TodoList")
 
 
+def return_raw(raw):
+    return raw
+
+
 def get_value_and_parse(raw, key_attribute: str, parse_method, optional: bool = True, default=None):
     if isinstance(raw, dict):
         try:
@@ -41,10 +45,10 @@ def get_value_and_parse(raw, key_attribute: str, parse_method, optional: bool = 
             SHL.error(f"Failed creating TodoList. Invalid key '{key_attribute}' provided.")
             raise InvalidValueError(name_of_invalid=key_attribute)
     else:
+        if isinstance(raw, SQLTodoList):
+            return None
         if optional:
             return default
-        if isinstance(value, SQLTodoList):
-            return None
         else:
             SHL.error(f"Failed creating TodoList. Mandatory key '{key_attribute}' missing.")
             raise DataMissingError(missing_key=key_attribute)
@@ -64,7 +68,7 @@ class TodoList:
                 self.created_at = datetime.now()
                 self.list_id = get_value_and_parse(to_parse, "list_id", parse_method=int)
             else:
-                self.created_at = get_value_and_parse(to_parse, "created_at", parse_method=dateutil.parser.isoparse)
+                self.created_at = get_value_and_parse(to_parse, "created_at", parse_method=return_raw)
                 self.list_id = get_value_and_parse(to_parse, "list_id", parse_method=int, optional=False)
 
         else:

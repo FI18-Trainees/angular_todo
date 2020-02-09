@@ -9,13 +9,12 @@
   {
     "name": "test_name",
     "description": "some description",
-    "hex_color": "",
+    "hex_color": "#FFFFFF",
     "created_at": "2020-02-08T20:52:15.945269"
   },
   {
     "list_id": 5,
     "name": "test_name",
-    "description": "some description",
     "hex_color": "#FFFFFF",
     "created_at": "2020-02-08T20:52:15.945269"
   },
@@ -23,13 +22,15 @@
     "list_id": 5,
     "name": "test_name",
     "description": "some description",
-    "hex_color": null,
     "created_at": "2020-02-08T20:52:15.945269"
   },
   {
+    "list_id": 5,
     "name": "test_name",
-    "description": "",
-    "hex_color": "#FFFFFF",
-    "created_at": "2020-02-08T20:52:15.945269"
+    "description": "some description",
+    "hex_color": "#FFFFFF"
+  },
+  {
+    "name": "test_name"
   }
 ]
