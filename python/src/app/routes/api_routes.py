@@ -94,6 +94,45 @@ def api_todo():
                     "message": "no entries found.",
                     "data": None
                 })
+        elif request.args.get("finished"):
+            SHL.info(f"Returning Todo by finished", f"GET /api/todo")
+            try:
+                finished = int(request.args.get("finished"))
+            except ValueError:
+                SHL.warning(f"Invalid finished provided", f"GET /api/todo")
+                return make_response(jsonify({
+                    "status": "failed",
+                    "message": "invalid finished"
+                }), 400)
+            except TypeError:
+                SHL.warning(f"Invalid finished provided", f"GET /api/todo")
+                return make_response(jsonify({
+                    "status": "failed",
+                    "message": "invalid finished"
+                }), 400)
+            try:
+                received_entries = [x for x in db_interface.todo_select_by_finished(finished=finished)]
+            except DatabaseError:
+                return make_response(jsonify({
+                    "status": "failed",
+                    "message": "database error"
+                }), 500)
+            except NoResultFound:
+                received_entries = None
+            if received_entries:
+                SHL.info(f"Returning {len(received_entries)} entries.", f"GET /api/todo")
+                return jsonify({
+                    "status": "success",
+                    "message": f"{len(received_entries)} entry found.",
+                    "data": [x.to_json() for x in received_entries]
+                })
+            else:
+                SHL.info(f"No entries found.", f"GET /api/todo")
+                return jsonify({
+                    "status": "failed",
+                    "message": "no entries found.",
+                    "data": None
+                })
         else:
             SHL.info(f"Returning Todo", f"GET /api/todo")
             try:

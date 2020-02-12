@@ -55,6 +55,7 @@ class TestAPI(unittest.TestCase):
         print("Testing generation with different inputs.")
         data = read_json(os.path.join("mock_jsons", "todo_input_200.json"))
         expecting_length = len(data)
+        finished_todos = [x for x in data if x.get("finished")]
         for d in data:
             print(f"Testing data: {d}")
             r = requests.post(url + "/api/todo", cookies=cookies, data=json.dumps(d))
@@ -83,3 +84,9 @@ class TestAPI(unittest.TestCase):
         r = requests.get(url + "/api/todo?list_id=1", cookies=cookies)
         self.assertEqual(r.status_code, 200)
         self.assertTrue(r.json(), dict)
+        # ===========================================================================
+        print("Testing GET '/api/todo?finished=1' endpoint")
+        r = requests.get(url + "/api/todo?finished=1", cookies=cookies)
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue(r.json(), list)
+        self.assertEqual(len(r.json()["data"]), len(finished_todos))

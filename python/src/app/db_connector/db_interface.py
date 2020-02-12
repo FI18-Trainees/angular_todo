@@ -42,6 +42,11 @@ class TodoSelectByItemId(object):
         return session.query(SQLTodo).filter(SQLTodo.item_id == item_id).one()
 
 
+class TodoSelectByFinished(object):
+    def go(self, session, finished: int) -> List[SQLTodo]:
+        return session.query(SQLTodo).filter(SQLTodo.finished == finished).all()
+
+
 class TodoInsertOrUpdate(object):
     def go(self, session, obj):
         return session.merge(obj)
@@ -147,6 +152,24 @@ class __DatabaseInterface:
         with self.session_scope() as session:
             try:
                 return Todo(TodoSelectByItemId().go(session, item_id=item_id))
+            except OperationalError as e:
+                SHL.error(f"Error in db session. {e}")
+                raise DatabaseError(e)
+            except NoResultFound as e:
+                SHL.error(f"Error in db session. {e}")
+                raise NoResultFound()
+            except CreationError:
+                return
+
+    def todo_select_by_finished(self, finished: int) -> List[Todo]:
+        SHL.info(f"Selecting all entries of Todo table with finished '{finished}'.")
+        with self.session_scope() as session:
+            try:
+                for e in TodoSelectByFinished().go(session, finished=finished):
+                    try:
+                        yield Todo(e)
+                    except CreationError:
+                        continue
             except OperationalError as e:
                 SHL.error(f"Error in db session. {e}")
                 raise DatabaseError(e)
