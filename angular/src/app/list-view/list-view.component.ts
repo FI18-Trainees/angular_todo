@@ -35,6 +35,14 @@ export class ListViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // filter for todos with finished = false
+    this.todoService.getTodos().forEach((todo: Todo) => {
+      if (todo.finished) {
+        this.openTodos.push(todo);
+      } else {
+        this.finishedTodos.push(todo);
+      }
+      console.log(todo);
+    });
   }
 
   ngOnDestroy(): void {
