@@ -6,7 +6,7 @@ from utils import Console
 from app.flask_app import app
 from app.authentication import token_auth, basic_auth
 from app.user_manager import user_manager
-from app.flask_limiter import limiter
+from app.rate_limiter import limiter
 
 SHL = Console("Routes")
 
