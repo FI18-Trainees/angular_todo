@@ -32,7 +32,7 @@ jobs:
         python start.py
 
   Py37_Ubuntu1604:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.7
@@ -84,7 +84,7 @@ jobs:
         python start.py
 
   Py36_Ubuntu1604:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.6
