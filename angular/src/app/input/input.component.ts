@@ -5,7 +5,8 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  styleUrls: ['./input.component.scss'],
+  providers: []
 })
 export class InputComponent implements OnInit {
 
@@ -16,8 +17,7 @@ export class InputComponent implements OnInit {
   constructor(private todoService: TodoService, private errorSnackbar: MatSnackBar) {
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   handleInput(e: KeyboardEvent) {
     e.preventDefault();
