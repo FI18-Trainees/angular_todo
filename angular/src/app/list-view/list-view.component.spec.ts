@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatCardModule, MatCheckboxModule, MatDividerModule, MatCheckbox } from '@angular/material';
+import { MatCardModule, MatCheckboxModule, MatDividerModule } from '@angular/material';
 
 import { ListViewComponent } from './list-view.component';
-import { Todo } from 'src/interfaces/todo';
 import { Priority } from 'src/enums/priority.enum';
 import { By } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ListViewComponent', () => {
   let component: ListViewComponent;
@@ -16,9 +15,10 @@ describe('ListViewComponent', () => {
       imports: [
         MatCardModule,
         MatCheckboxModule,
-        MatDividerModule
+        MatDividerModule,
+        HttpClientTestingModule
       ],
-      declarations: [ ListViewComponent ]
+      declarations: [ ListViewComponent ],
     })
     .compileComponents();
   }));
@@ -48,6 +48,7 @@ describe('ListViewComponent', () => {
     fixture.detectChanges();
 
     const openTodoElement = fixture.debugElement.query(By.css('#' + CSS.escape(component.openTodos[0].id.toString()))).nativeElement;
+    // tslint:disable-next-line: max-line-length
     const finishedTodoElement = fixture.debugElement.query(By.css('#' + CSS.escape(component.finishedTodos[0].id.toString()))).nativeElement;
 
     fixture.detectChanges();

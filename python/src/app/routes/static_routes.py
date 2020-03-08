@@ -13,7 +13,7 @@ SHL = Console("Routes")
 @app.route("/")
 @limiter.exempt
 def index():
-    return "OK"
+    return send_from_directory(os.path.join("public"), "index.html")
 
 
 @app.route("/401")
