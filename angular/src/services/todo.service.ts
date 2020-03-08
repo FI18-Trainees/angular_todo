@@ -25,10 +25,11 @@ export class TodoService {
   }
 
   getTodos(): Observable<Todo[]> {
-
     return this.api.getTodos().pipe(
       map((todos: Todo[]) => {
-        this.todos = todos;
+        if (!todos) {
+          this.todos = todos;
+        }
         return todos;
       })
     );

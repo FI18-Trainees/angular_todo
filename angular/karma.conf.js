@@ -37,7 +37,7 @@ module.exports = function (config) {
       }
     },
     browsers: ['ChromeHeadless'],
-    singleRun: true,
+    singleRun: false,
     restartOnFileChange: true,
   });
 };

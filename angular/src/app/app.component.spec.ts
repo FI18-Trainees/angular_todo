@@ -6,9 +6,10 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { InputComponent } from './input/input.component';
 import { ListViewComponent } from './list-view/list-view.component';
 // tslint:disable-next-line: max-line-length
-import { MatSidenavModule, MatDividerModule, MatToolbarModule, MatFormFieldModule, MatCardModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
+import { MatSidenavModule, MatDividerModule, MatToolbarModule, MatFormFieldModule, MatCardModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatSnackBarModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,6 +27,8 @@ describe('AppComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         MatCheckboxModule,
+        MatSnackBarModule,
+        HttpClientTestingModule
       ],
       declarations: [
         AppComponent,

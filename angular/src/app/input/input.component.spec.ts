@@ -2,10 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputComponent } from './input.component';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoService } from 'src/services/todo.service';
 import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -21,8 +22,10 @@ describe('InputComponent', () => {
         MatInputModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatSnackBarModule,
+        HttpClientTestingModule
       ],
-      declarations: [ InputComponent ]
+      declarations: [ InputComponent ],
     })
     .compileComponents();
   }));
@@ -56,5 +59,6 @@ describe('InputComponent', () => {
       expect(todoElement.value).toBe('testValue');
       expect(dateElement.value).toBe('02/02/2020');
     });
+    expect(true).toBeTruthy();
   });
 });
