@@ -1,0 +1,38 @@
+[
+  {
+    "item_id": 1,
+    "list_id": 1,
+    "title": "dwadawdaw",
+    "finished": false,
+    "due_date": "2020-02-08T20:52:15.945269",
+    "address": "address",
+    "description": "description",
+    "priority": 1,
+    "subtasks": "adwadaw",
+    "reminder": "2020-02-08T20:52:15.945269"
+  },
+  {
+    "list_id": 1,
+    "title": "dwadawdaw",
+    "finished": true,
+    "due_date": "2020-02-08T20:52:15.945269",
+    "address": "address",
+    "description": "description",
+    "priority": 1,
+    "subtasks": "adwadaw",
+    "reminder": "2020-02-08T20:52:15.945269"
+  },
+  {
+    "title": "dwadawdaw",
+    "finished": false,
+    "list_id": 1
+  },
+  {
+    "list_id": 1,
+    "title": "dwadawdaw",
+    "finished": 1,
+    "due_date": "2020-02-08T20:52:15.945269",
+    "address": "address",
+    "description": "description"
+  }
+]
